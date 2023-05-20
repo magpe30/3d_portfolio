@@ -10,9 +10,9 @@ import visionogy from "./company/visionogy.png";
 import visionogysite from "./visionogysite.jpg";
 import galaxy from './galaxy.jpg';
 
-import codepen from './codepen.png';
-import gmail from './gmail.png';
-import linked from './linkedIn.png';
+import codepen from './codepen.jpg';
+import gmail from './gmail.jpg';
+import linked from './linkedIn.jpg';
 
 
 export {
