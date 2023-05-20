@@ -7,7 +7,7 @@ import motive from "./company/motive.png";
 import motorway from "./company/motorway.png";
 import visionogy from "./company/visionogy.png";
 
-import visionogyWeb from "./visionogyWeb.png";
+import visionogyWeb from "./visionogysite.jpg";
 import galaxy from './galaxy.png';
 
 import codepen from './codepen.png';
