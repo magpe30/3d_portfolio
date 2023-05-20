@@ -6,7 +6,7 @@ import {
     motive,
     motorway,
     visionogy,
-    visionogyWeb,
+    visionogysite,
     github,
   } from "../assets";
   
@@ -136,7 +136,7 @@ const projects = [
           color: "pink-text-gradient",
         },
       ],
-      image: visionogyWeb,
+      image: visionogysite,
       source_code_link: "https://www.visionogy.com/",
     },
     {
