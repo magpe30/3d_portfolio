@@ -1,4 +1,4 @@
-import profilePicture from './photo_linkedin.png';
+import profilePicture from './photolink.jpg';
 import github from "./github.png";
 import menu from "./menu.svg";
 import close from "./close.svg";
@@ -12,7 +12,7 @@ import galaxy from './galaxy.jpg';
 
 import codepen from './codepen.jpg';
 import gmail from './gmail.jpg';
-import linked from './linkedIn.jpg';
+import linked from './linkedin.jpg';
 
 
 export {

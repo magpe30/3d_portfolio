@@ -101,7 +101,7 @@
   height: 50% !important;
   position: absolute;
   right: 0;
-  transform: translateY(148px);
+  transform: translateY(140px);
 
   @media (max-width: 1283px) {
     width: 100% !important;

@@ -4,6 +4,7 @@ import About from './About';
 import Experience from './Experience';
 import Works from './Works';
 import Contact from './Contact';
+import Loader from './Loader';
 
 export {
   Hero,
@@ -12,4 +13,5 @@ export {
   Experience,
   Works,
   Contact,
+  Loader,
 }

@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
 import Spline from '@splinetool/react-spline';
 
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
+import { Loader } from '../components';
 import { slideIn, fadeIn } from "../utils/motion";
 import { contactLinks } from '../constants';
 
@@ -15,7 +16,7 @@ const Contact = () => {
     >
       <motion.div
         variants={slideIn("left", "tween", 0.2, 1)}
-        className='flex-[0.75] p-8'
+        className='flex-[0.75] p-8 z-10'
       >
         <p className={styles.sectionSubText}>Get in touch</p>
         <h3 className={styles.sectionHeadText}>Contact</h3>
@@ -51,7 +52,9 @@ const Contact = () => {
           } 
         </div>
       </motion.div>
-      <Spline className="splineButton" scene='https://prod.spline.design/1vcGr0ORyCbons11/scene.splinecode' />
+      <Suspense fallback={<Loader />}>
+        <Spline className="splineButton" scene='https://prod.spline.design/1vcGr0ORyCbons11/scene.splinecode' />
+      </Suspense>
     </div>
   );
 };
