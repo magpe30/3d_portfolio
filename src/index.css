@@ -84,7 +84,7 @@
 
 /*Canvas styles */
 
-.spline{
+/*.spline{
   position: absolute;
   margin:0;
   top:0;
@@ -94,7 +94,7 @@
   @media (max-width: 960px) {
     width: 100% !important;
   }
-}
+}*/
 
 .splineButton {
   width: 50% !important;

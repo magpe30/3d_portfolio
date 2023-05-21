@@ -1,15 +1,31 @@
-//import Spline from '@splinetool/react-spline';
+import { lazy, Suspense, useEffect, useState } from "react";
 
-import { Application } from '@splinetool/runtime';
+const Spline = lazy(() => import("@splinetool/react-spline"), { ssr: false });
+const SplineObj = ({ scene }) => {
+  const [isDesktop, setDesktop] = useState(false);
 
-const canvas = document.getElementById('canvas3d');
-const app = new Application(canvas);
+  useEffect(() => {
+    if (window.innerWidth > 550) {
+      setDesktop(true);
+    } else {
+      setDesktop(false);
+    }
 
-const Component = () => app.load('https://prod.spline.design/1vcGr0ORyCbons11/scene.splinecode');
-const Blob = () => {
-    return (
-       <Component />
-    )
+    const updateMedia = () => {
+      if (window.innerWidth > 550) {
+        setDesktop(true);
+      } else {
+        setDesktop(false);
+      }
+    };
+    window.addEventListener('resize', updateMedia);
+    return () => window.removeEventListener('resize', updateMedia);
+  }, []);
+  return (
+    <Suspense fallback={<>Loading...</>}>
+      {isDesktop&&<Spline className="absolute top-0 right-0" scene={scene} />}
+    </Suspense>
+  );
 };
 
-export default Blob;
+export default SplineObj;
