@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
-import Spline from '@splinetool/react-spline';
 import { Loader } from '../components';
 import { motion } from 'framer-motion';
+import { Blob } from '../components';
 
 import { styles } from '../styles';
+
 
 const Hero = () => {
   return (
@@ -26,7 +27,7 @@ const Hero = () => {
         </div>
       </div>
       <Suspense fallback={<Loader />}>
-        <Spline className='spline' scene='https://prod.spline.design/1l8xEGfWDX9DZ2Hj/scene.splinecode' />
+        <Blob />
       </Suspense>
       <div className='absolute xs:bottom-10 bottom-32 w-full flex justify-center items-center'>
         <a href='#about'>

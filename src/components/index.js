@@ -1,3 +1,5 @@
+import { lazy } from 'react';
+
 import Hero from './Hero';
 import Navbar from './Navbar';
 import About from './About';
@@ -5,6 +7,8 @@ import Experience from './Experience';
 import Works from './Works';
 import Contact from './Contact';
 import Loader from './Loader';
+
+const Blob = lazy(() => import('./Blob'));
 
 export {
   Hero,
@@ -14,4 +18,5 @@ export {
   Works,
   Contact,
   Loader,
+  Blob,
 }
