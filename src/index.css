@@ -89,10 +89,23 @@
   margin:0;
   top:0;
   right:0;
+  width: 70% !important;
+
+  @media (max-width: 960px) {
+    width: 100% !important;
+  }
 }
 
 .splineButton {
+  width: 50% !important;
+  height: 50% !important;
   position: absolute;
   right: 0;
   transform: translateY(140px);
+
+  @media (max-width: 1283px) {
+    width: 100% !important;
+    left:0;
+    transform: translateY(100px);
+  }
 }
