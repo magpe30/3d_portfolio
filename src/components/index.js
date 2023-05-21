@@ -1,13 +1,10 @@
-import { lazy } from 'react';
-
-import Blob from './Blob';
+import Blob from './Blob/Blob';
 import Hero from './Hero';
 import Navbar from './Navbar';
 import About from './About';
 import Experience from './Experience';
 import Works from './Works';
 import Contact from './Contact';
-import Loader from './Loader';
 
 export {
   Hero,
@@ -16,6 +13,5 @@ export {
   Experience,
   Works,
   Contact,
-  Loader,
   Blob,
 }

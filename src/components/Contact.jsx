@@ -1,10 +1,8 @@
 import React, { useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
-import Spline from '@splinetool/react-spline';
 
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
-import { Loader } from '../components';
 import { slideIn, fadeIn } from "../utils/motion";
 import { contactLinks } from '../constants';
 
@@ -52,9 +50,6 @@ const Contact = () => {
           } 
         </div>
       </motion.div>
-      <Suspense fallback={<Loader />}>
-        <Spline className="splineButton" scene='https://prod.spline.design/1vcGr0ORyCbons11/scene.splinecode' />
-      </Suspense>
     </div>
   );
 };
