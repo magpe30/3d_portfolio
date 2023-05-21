@@ -12,7 +12,7 @@ import galaxy from './galaxy.jpg';
 
 import codepen from './codepen.jpg';
 import gmail from './gmail.jpg';
-import linked from './linkedin.jpg';
+import linked from './linked.jpg';
 
 
 export {
