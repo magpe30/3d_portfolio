@@ -11,7 +11,9 @@ const App = () => {
           <Hero />
         </div>
         <About />
-        <Experience />
+        <div className='bg-work-pattern bg-no-repeat bg-center'>
+          <Experience />
+        </div>
         <Works />
         <div className="relative z-0">
           <Contact />
