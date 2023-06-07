@@ -6,7 +6,7 @@ const fragmentShader =`
     varying float vDisplacement;
 
     void main() {
-        float distort =  2.0 * vDisplacement * u_intensity * sin(vUv.y * 10.0 + u_time);
+        float distort =  2.0 * vDisplacement * u_intensity * sin(vUv.y * 3.0 + u_time);
         vec3 color = vec3(abs(vUv - 0.5) * 2.0 * (1.0 - distort), 1.0);
         gl_FragColor = vec4(color, 1.0);
     }

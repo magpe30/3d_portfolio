@@ -82,6 +82,16 @@
   -webkit-text-fill-color: transparent;
 }
 
+/*Hero styles */
+
+.zContainer {
+  z-index: 40;
+}
+
+.menuContainer {
+  z-index: 60;
+}
+
 /*Canvas styles */
 .container {
   position: relative;
@@ -91,7 +101,6 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  z-index: 40;
   font-family: "Montserrat", sans-serif;
 }
 
@@ -101,4 +110,5 @@ canvas {
   right: 0;
   height: 100vh;
   width: 100vw;
+  z-index: 10;
 }

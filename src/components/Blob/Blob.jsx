@@ -1,8 +1,8 @@
-import React, { useMemo, useRef } from "react";
-import vertexShader from "./vertexShader";
-import fragmentShader from "./fragmentShader";
 import { useFrame } from "@react-three/fiber";
+import React, { useMemo, useRef } from "react";
 import { MathUtils } from "three";
+import fragmentShader from "./fragmentShader";
+import vertexShader from "./vertexShader";
 
 const Blob = () => {
   const mesh = useRef();
@@ -10,7 +10,7 @@ const Blob = () => {
   const uniforms = useMemo(() => {
     return {
       u_time: { value: 0 },
-      u_intensity: { value: 0.3 },
+      u_intensity: { value: 0.5 },
     };
   });
 
@@ -18,7 +18,7 @@ const Blob = () => {
     const { clock } = state;
     if (mesh.current) {
       mesh.current.material.uniforms.u_time.value =
-        0.4 * clock.getElapsedTime();
+        0.5 * clock.getElapsedTime();
 
       mesh.current.material.uniforms.u_intensity.value = MathUtils.lerp(
         mesh.current.material.uniforms.u_intensity.value,

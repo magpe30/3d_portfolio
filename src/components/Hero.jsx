@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
 import { Canvas } from "@react-three/fiber";
 import { motion } from 'framer-motion';
+import { Suspense } from 'react';
 import { Blob } from '../components';
 
 import { styles } from '../styles';
@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <section className='relative w-full h-screen mx-auto'>
       <div
-        className={`absolute inset-0 top-[120px]  z-30 max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 z-50`}
+        className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 zContainer`}
       >
         <div className='flex flex-col justify-center items-center mt-5'>
           <div className='w-1 sm:h-80 h-40 blue-gradient rounded-t'/>

@@ -1,10 +1,10 @@
-import React, { useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
+import React from "react";
 
-import { styles } from "../styles";
-import { SectionWrapper } from "../hoc";
-import { slideIn, fadeIn } from "../utils/motion";
 import { contactLinks } from '../constants';
+import { SectionWrapper } from "../hoc";
+import { styles } from "../styles";
+import { fadeIn, slideIn } from "../utils/motion";
 
 const Contact = () => {
 
@@ -21,8 +21,8 @@ const Contact = () => {
         <p>Let's connect! Drop me a line if you fancy a chat.</p>
         <div className='flex-[0.75] rounded-2xl my-10 flex flex-wrap justify-start gap-7 items-center z-10'>
           {
-            contactLinks.map((link) => 
-            <div className='xs:w-[100px]'>
+            contactLinks.map((link, index) => 
+            <div className='xs:w-[100px]' key={index}>
               <motion.div
                 variants={fadeIn("right", "spring", 0.5, 0.75)}
                 className='w-full blue-gradient p-[1px] rounded-[20px]'
