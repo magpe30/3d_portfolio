@@ -1,14 +1,14 @@
 import {
-    codepen,
-    linked,
-    galaxy,
-    gmail,
-    motive,
-    motorway,
-    visionogy,
-    visionogysite,
-    github,
-  } from "../assets";
+  codepen,
+  galaxy,
+  github,
+  gmail,
+  linked,
+  motive,
+  motorway,
+  visionogy,
+  visionogysite,
+} from "../assets";
   
 export const navLinks = [
     {
@@ -44,7 +44,7 @@ const experiences = [
       company_name: "Motive Create",
       icon: motive,
       iconBg: "#E6DEDD",
-      date: "Aug 2021 - Oct 2022",
+      date: "Aug 2021 - Oct 2021",
       points: [
         "Created skeleton pages and basic logic using proprietary tech and internal tools.",
         "Worked closely with SDK developers on connecting the APIs and improving the API’s performance.",
@@ -181,4 +181,4 @@ const contactLinks = [
   }
 ];
   
-  export { experiences, projects, contactLinks };
+  export { contactLinks, experiences, projects };
