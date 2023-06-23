@@ -1,11 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import Tilt from 'react-tilt';
 import { motion } from 'framer-motion';
+import Tilt from 'react-tilt';
 import { profilePicture } from '../assets';
 import { SectionWrapper } from "../hoc";
 
 import { styles } from '../styles';
-import {fadeIn, textAnimation } from '../utils/motion';
+import { fadeIn, textAnimation } from '../utils/motion';
 
 const ServiceCard = () => (
   <Tilt className='xs:w-[250px] w-full'>
@@ -39,7 +39,8 @@ const About = () => {
       <div>
         <motion.div variants={textAnimation()}>
           <p className={styles.sectionSubText}>Introduction</p>
-          <h2 className={styles.sectionHeadText}>About</h2>
+          <h2 className={styles.sectionHeadText}>About me</h2>
+          <div className="divider"></div>
         </motion.div>
 
         <motion.p 

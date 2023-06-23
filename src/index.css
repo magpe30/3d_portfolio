@@ -112,3 +112,76 @@ canvas {
   width: 100vw;
   z-index: 10;
 }
+
+/* GRADIENT STYLES */
+.mainGradient {
+  position: absolute;
+  z-index: 2;
+  width: 390px;
+  height: 390px;
+  background: #C33764;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right,#C33764, #1D2671);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #C33764, #1D2671); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 40%;
+  filter: blur(160px);
+  transform: translate3d(0, 0, 0); /* for safari */
+}
+
+.setTop {
+  top: -120px;
+  right: 0;
+}
+
+.setLeft {
+  left:-330px;
+}
+
+.setDown {
+  bottom: 0;
+  right:0px;
+}
+/* CARD STYLES*/
+
+.divider {
+  margin-top: 10px;
+  height: 1px;
+  width: 100%;
+  align-self: stretch;
+  border-bottom: 1px dashed hsla(0,0%,100%,.2);
+}
+
+.cardExperienceContainer {
+  display: grid;
+  width: 100%;
+  max-width: 1280px;
+  padding: 40px 20px 0;
+  justify-items: stretch;
+  align-items: start;
+  align-self: center;
+  grid-auto-columns: 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+}
+
+@media screen and (max-width: 767px) {
+  .cardExperienceContainer {
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* WORK CARD STYLES */
+
+.workCard {
+  overflow: hidden;
+  border: 1px solid hsla(0,0%,100%,.05);
+  border-radius: 8px;
+  background-color: hsla(0,0%,100%,.05);
+}
+
+.cardImage {
+  transform: translateY(-30px);
+  box-shadow: -1px -20px 19px 10px #121522;
+}

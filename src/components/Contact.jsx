@@ -18,7 +18,8 @@ const Contact = () => {
       >
         <p className={styles.sectionSubText}>Get in touch</p>
         <h3 className={styles.sectionHeadText}>Contact</h3>
-        <p>Let's connect! Drop me a line if you fancy a chat.</p>
+        <div className="divider"></div>
+        <p className="mt-2">Let's connect!<br/> Feel free to send me an email or reach out.</p>
         <div className='flex-[0.75] rounded-2xl my-10 flex flex-wrap justify-start gap-7 items-center z-10'>
           {
             contactLinks.map((link, index) => 
@@ -50,6 +51,7 @@ const Contact = () => {
           } 
         </div>
       </motion.div>
+      <div className="mainGradient setDown" />
     </div>
   );
 };

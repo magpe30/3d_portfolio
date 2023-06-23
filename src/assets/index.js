@@ -1,14 +1,17 @@
-import profilePicture from './photolink.jpg';
+import close from "./close.svg";
 import github from "./github.png";
 import menu from "./menu.svg";
-import close from "./close.svg";
+import profilePicture from './photolink.jpg';
+import rightArrow from './rightArrow.svg';
 
 import motive from "./company/motive.png";
 import motorway from "./company/motorway.png";
 import visionogy from "./company/visionogy.png";
 
-import visionogysite from "./visionogysite.jpg";
+import candlesEcommerce from "./candlesEcommerce.png";
+import carSearch from "./carSearch.png";
 import galaxy from './galaxy.jpg';
+import mainWebsite from "./mainWebsite.png";
 
 import codepen from './codepen.jpg';
 import gmail from './gmail.jpg';
@@ -16,16 +19,10 @@ import linked from './linked.jpg';
 
 
 export {
-  github,
-  profilePicture,
-  menu,
-  close,
+  candlesEcommerce, carSearch, close,
   codepen,
-  galaxy,
-  gmail,
-  linked,
-  motive,
-  motorway,
-  visionogy,
-  visionogysite,
+  galaxy, github, gmail,
+  linked, mainWebsite, menu, motive,
+  motorway, profilePicture, rightArrow, visionogy
 };
+

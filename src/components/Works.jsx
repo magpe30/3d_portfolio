@@ -1,60 +1,39 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 
-import { styles } from "../styles";
-import { github } from "../assets";
-import { SectionWrapper } from "../hoc";
+import { rightArrow } from '../assets';
+
 import { projects } from "../constants";
+import { SectionWrapper } from "../hoc";
+import { styles } from "../styles";
 import { fadeIn, textAnimation } from "../utils/motion";
 
 const ProjectCard = ({
   index,
   name,
   description,
-  tags,
   image,
   source_code_link,
 }) => {
   return (
     <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
-      <div
-        className='bg-tertiary p-5 rounded-2xl sm:w-[560px] w-full'
-      >
+      <div className="workCard">
         <div className='relative w-full h-full'>
-          <img
-            src={image}
-            alt='project_image'
-            className='w-full h-full rounded-2xl'
-          />
-
-          <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
-            <div
-              onClick={() => window.open(source_code_link, "_blank")}
-              className='blue-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
-            >
-              <img
-                src={github}
-                alt='source code'
-                className='w-7 h-7 object-contain'
-              />
-            </div>
-          </div>
+            <img
+              src={image}
+              alt='project_image'
+              loading="lazy"
+              className='max-w-[350px] rounded-2xl'
+            />
         </div>
-
-        <div className='mt-5'>
-          <h3 className='text-[#3551FF] font-bold text-[24px]'>{name}</h3>
-          <p className='mt-2 text-secondary text-[14px]'>{description}</p>
+        <div className="py-[24px] px-[24px] max-w-[350px] h-[200px] bg-[#121522] cardImage">
+          <h3 className='text-white font-bold text-[24px]'>{name}</h3>
+          <p className='mt-2 text-secondary text-[15px]'>{description}</p>
         </div>
-
-        <div className='mt-4 flex flex-wrap gap-2'>
-          {tags.map((tag) => (
-            <p
-              key={`${name}-${tag.name}`}
-              className={`text-[14px] ${tag.color}`}
-            >
-              {tag.name}
-            </p>
-          ))}
+        <div className="divider"></div>
+        <div onClick={() => window.open(source_code_link, "_blank")} className="py-5 px-3 flex justify-between cursor-pointer">
+           <p>View project</p>
+           <img src={rightArrow} alt="right arrow"></img>
         </div>
       </div>
     </motion.div>
@@ -67,6 +46,7 @@ const Works = () => {
       <motion.div variants={textAnimation()}>
         <p className={`${styles.sectionSubText} `}>My work</p>
         <h2 className={`${styles.sectionHeadText}`}>Projects</h2>
+        <div className="divider"></div>
       </motion.div>
 
       <div className='w-full flex'>

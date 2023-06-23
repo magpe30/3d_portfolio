@@ -8,16 +8,13 @@ import { styles } from '../styles';
 const Hero = () => {
   return (
     <section className='relative w-full h-screen mx-auto'>
+      <div className="mainGradient setTop" />
       <div
         className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 zContainer`}
       >
-        <div className='flex flex-col justify-center items-center mt-5'>
-          <div className='w-1 sm:h-80 h-40 blue-gradient rounded-t'/>
-        </div>
-
         <div>
           <h1 className={`${styles.heroHeadText} text-white`}>
-            Hello, I am <span className='text-[#3551FF]'>Magda</span>
+          I’m Magda — Frontend Developer.
           </h1>
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
             I enjoy building user <br className='sm:block hidden' />

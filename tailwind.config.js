@@ -18,10 +18,6 @@ export default {
       screens: {
         xs: "450px",
       },
-      backgroundImage: {
-        "hero-pattern": "url('/src/assets/herobg.png')",
-        "work-pattern": "url('/src/assets/codebg.jpg')",
-      },
     },
   },
   plugins: [],
