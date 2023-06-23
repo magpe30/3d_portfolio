@@ -81,7 +81,7 @@ const projects = [
     {
       name: "Candles E-commerce",
       description:
-        "E-commerce platform that contains all the essentials for adding products and Stripe as payment system. Users can also browse through a blog and leave comments",
+        "E-commerce platform that offers a range of features, including seamless product addition and integration with the Stripe payment system. Additionally, users can explore blog and leave comments.",
       tags: [
         {
           name: "react",
