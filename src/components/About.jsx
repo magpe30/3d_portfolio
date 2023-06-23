@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { motion } from 'framer-motion';
-import Tilt from 'react-tilt';
 import { profilePicture } from '../assets';
 import { SectionWrapper } from "../hoc";
 
@@ -8,7 +7,7 @@ import { styles } from '../styles';
 import { fadeIn, textAnimation } from '../utils/motion';
 
 const ServiceCard = () => (
-  <Tilt className='xs:w-[250px] w-full'>
+  <div className='xs:w-[250px] w-full'>
     <motion.div
       variants={fadeIn("right", "spring", 0.5, 0.75)}
       className='w-full blue-gradient p-[1px] rounded-[20px] shadow-card'
@@ -29,7 +28,7 @@ const ServiceCard = () => (
         />
       </div>
     </motion.div>
-  </Tilt>
+  </div>
 );
 
 const About = () => {
