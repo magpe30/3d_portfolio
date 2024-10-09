@@ -6,7 +6,7 @@ import {
   gmail,
   linked,
   mainWebsite,
-  motive,
+  roadra,
   motorway,
   visionogy
 } from "../assets";
@@ -14,39 +14,48 @@ import {
 export const navLinks = [
     {
       id: "about",
-      title: "About",
+      title: "// about",
     },
     {
       id: "work",
-      title: "Work",
+      title: "// work",
     },
     {
       id: "contact",
-      title: "Contact",
+      title: "// contact",
     },
 ];
   
 const experiences = [
     {
+      title: "Software Developer",
+      company_name: "Roadra",
+      link: "https://www.roadra.com",
+      location: "San Diego, CA",
+      icon: roadra,
+      tech: ["Vue", "Vuex", "Node", "AWS", "MongoDB"],
+      iconBg: "#E6DEDD",
+      date: "June 2023",
+      desc: "I am the third developer working alongside two founders at a startup, where I focus on maintaining the core app and tools for agents. In addition to maintaining existing systems, I rapidly develop new features to meet evolving business needs and support the growth of our product."
+    },
+    {
       title: "Junior Frontend Engineer",
       company_name: "Motorway",
+      link: "https://www.motorway.co.uk",
+      location: "London, UK",
       icon: motorway,
+      tech: ["React", "Redux", "Jest", "Node", "TS"],
       iconBg: "#383E56",
       date: "Oct 2021 - Mar 2023",
       desc: "Working as a Junior Frontend Engineer in a small, agile squad comprising talented designers, quality assurance specialists, developers, and a dedicated project manager. Together, we collaborated on a client-facing application within a fast-paced environment.",
     },
     {
-      title: "Junior Frontend Engineer",
-      company_name: "Motive Create",
-      icon: motive,
-      iconBg: "#E6DEDD",
-      date: "Aug 2021 - Oct 2021",
-      desc: "As a Junior Frontend Engineer, I worked closely with SDK developers on connecting the APIs and improving the API’s performance."
-    },
-    {
       title: "Fullstack Developer",
       company_name: "Visionogy",
+      link: "https://www.visionogy.com/",
+      location: "London, UK",
       icon: visionogy,
+      tech: ["HTML", "CSS", "JS", "Node", "Firebase"],
       iconBg: "#383E56",
       date: "Jan 2021 - Jul 2021",
       desc: "My job was mostly focused on designing and developing frontend and backend for a SaaS platform and website. I implemented responsive design and ensured cross-browser compatibility.",

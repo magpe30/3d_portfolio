@@ -13,8 +13,8 @@ const Hero = () => {
         className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 zContainer`}
       >
         <div>
-          <h1 className={`${styles.heroHeadText} text-white`}>
-          I’m Magda — Frontend Developer.
+          <h1 className={`${styles.heroHeadText} textGradientHeadline`}>
+          I’m Magda — Software <br/> Developer.
           </h1>
           <p className={`${styles.heroSubText} mt-2 text-white-100`}>
             I enjoy building user <br className='sm:block hidden' />

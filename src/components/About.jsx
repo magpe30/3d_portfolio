@@ -38,7 +38,7 @@ const About = () => {
       <div>
         <motion.div variants={textAnimation()}>
           <p className={styles.sectionSubText}>Introduction</p>
-          <h2 className={styles.sectionHeadText}>About me</h2>
+          <h2 className={`${styles.sectionHeadText} textGradientHeadline`}>About me</h2>
           <div className="divider"></div>
         </motion.div>
 
@@ -46,10 +46,12 @@ const About = () => {
           variants={fadeIn('', '', 0.2, 1)}
           className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
         >
-          I am a highly motivated developer with a deep interest in creating visually rich 
-          applications. My work has centered on developing user-friendly interfaces and crafting user experiences, 
-          both of which I find incredibly rewarding. I am passionate about the intersection of technology and 
-          creativity. Writing clean and accessible code is important for me. I am always eager to take on new challenges and explore innovative solutions. 
+          I am a highly motivated developer with a deep interest in creating visually rich applications, 
+          drawing on my background in film and photography. Visual aesthetics are important to me, and I enjoy 
+          crafting user-friendly interfaces that are both functional and visually appealing. My work centers on 
+          creating engaging user experiences, which I find incredibly rewarding. I am passionate about the 
+          intersection of technology and creativity, and writing clean, accessible code is a priority. 
+          I'm always eager to take on new challenges and explore innovative solutions
         </motion.p>
       </div>
       <div className='mt-20 flex flex-wrap gap-10'>

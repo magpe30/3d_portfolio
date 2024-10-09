@@ -4,7 +4,7 @@ import menu from "./menu.svg";
 import profilePicture from './photolink.jpg';
 import rightArrow from './rightArrow.svg';
 
-import motive from "./company/motive.png";
+import roadra from "./company/roadra.png";
 import motorway from "./company/motorway.png";
 import visionogy from "./company/visionogy.png";
 
@@ -22,7 +22,7 @@ export {
   candlesEcommerce, carSearch, close,
   codepen,
   galaxy, github, gmail,
-  linked, mainWebsite, menu, motive,
+  linked, mainWebsite, menu, roadra,
   motorway, profilePicture, rightArrow, visionogy
 };
 

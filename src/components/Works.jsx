@@ -45,7 +45,7 @@ const Works = () => {
     <>
       <motion.div variants={textAnimation()}>
         <p className={`${styles.sectionSubText} `}>My work</p>
-        <h2 className={`${styles.sectionHeadText}`}>Projects</h2>
+        <h2 className={`${styles.sectionHeadText} textGradientHeadline`}>Projects</h2>
         <div className="divider"></div>
       </motion.div>
 

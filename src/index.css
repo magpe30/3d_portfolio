@@ -34,11 +34,11 @@
 }
 
 .blue-gradient {
-  background: #3551FF;
-  background: linear-gradient(-90deg, #3551FF 0%, rgba(60, 51, 80, 0) 100%);
+  background: #8082f8;
+  background: linear-gradient(-90deg, #8082f8 0%, rgba(60, 51, 80, 0) 100%);
   background: -webkit-linear-gradient(
     -90deg,
-    #3551FF 0%,
+    #8082f8 0%,
     rgba(60, 51, 80, 0) 100%
   );
 }
@@ -114,6 +114,41 @@ canvas {
 }
 
 /* GRADIENT STYLES */
+.textGradientHeadline {
+  text-shadow: calc(2px + -0.0015em * 1) 
+    calc(-3px + 0.0015em * 1) 0 #8082f8, 
+    calc(2px + -0.0017em * 2) calc(-2px + 0.0017em * 2) 0 #8082f8, 
+    calc(2px + -0.0015em * 3) calc(-2px + 0.0015em * 3) 0 #8082f8, 
+    calc(2px + -0.0015em * 4) calc(-2px + 0.0015em * 4) 0 #8082f8, 
+    calc(2px + -0.0015em * 5) calc(-2px + 0.0015em * 5) 0 #8082f8, 
+    calc(2px + -0.0015em * 6) calc(-2px + 0.0015em * 6) 0 #8082f8, 
+    calc(2px + -0.0015em * 7) calc(-2px + 0.0015em * 7) 0 #8082f8, 
+    calc(2px + -0.0015em * 8) calc(-2px + 0.0015em * 8) 0 #8082f8, 
+    calc(2px + -0.0015em * 9) calc(-2px + 0.0015em * 9) 0 #8082f8, 
+    calc(2px + -0.0015em * 10) calc(-2px + 0.0015em * 10) 0 #8082f8, 
+    calc(2px + -0.0015em * 11) calc(-2px + 0.0015em * 11) 0 #8082f8, 
+    calc(2px + -0.0015em * 12) calc(-2px + 0.0015em * 12) 0 #8082f8, 
+    calc(2px + -0.0015em * 13) calc(-2px + 0.0015em * 13) 0 #8082f8, 
+    calc(2px + -0.0015em * 14) calc(-2px + 0.0015em * 14) 0 #8082f8, 
+    calc(2px + -0.0015em * 15) calc(-2px + 0.0015em * 15) 0 #8082f8, 
+    calc(2px + -0.0015em * 16) calc(-2px + 0.0015em * 16) 0 #8082f8, 
+    calc(2px + -0.0015em * 17) calc(-2px + 0.0015em * 17) 0 #8082f8, 
+    calc(2px + -0.0015em * 18) calc(-2px + 0.0015em * 18) 0 #8082f8, 
+    calc(2px + -0.0015em * 19) calc(-2px + 0.0015em * 19) 0 #8082f8, 
+    calc(2px + -0.0015em * 20) calc(-2px + 0.0015em * 20) 0 #8082f8, 
+    calc(2px + -0.0015em * 21) calc(-2px + 0.0015em * 21) 0 #8082f8, 
+    calc(2px + -0.0015em * 22) calc(-2px + 0.0015em * 22) 0 #8082f8, 
+    calc(2px + -0.0015em * 23) calc(-2px + 0.0015em * 23) 0 #8082f8, 
+    calc(2px + -0.0015em * 24) calc(-2px + 0.0015em * 24) 0 #8082f8, 
+    calc(2px + -0.0015em * 25) calc(-2px + 0.0015em * 25) 0 #8082f8;
+  font-family: Bueno-VF, Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  color: black;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #8082f8;
+  transform: scaleY(1.3);
+  transform-origin: bottom;
+  margin-top: 12px;
+}
 .mainGradient {
   position: absolute;
   z-index: 2;
@@ -125,6 +160,23 @@ canvas {
   border-radius: 40%;
   filter: blur(160px);
   transform: translate3d(0, 0, 0); /* for safari */
+}
+
+.techWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: white;
+}
+
+.techItem {
+  background: black;
+  border: 1px solid #8082f8;
+  border-radius: 8px;
+  padding: 5px 8px;
+  box-shadow: 3px 3px 0px #8082f8;
 }
 
 .setTop {
