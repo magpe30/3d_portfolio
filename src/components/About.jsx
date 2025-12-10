@@ -6,8 +6,8 @@ const About = () => {
         <p className="label-upper text-slate-500 mb-2">ABOUT</p>
         <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
           <p className="text-sm text-slate-700 leading-relaxed">
-          I’m a frontend developer with a film and photography background. 
-          I focus on clear, intentional interfaces.While frontend is my specialty, 
+          I’m a software developer with a film and photography background.
+          I focus on clear, intentional interfaces. While frontend is my specialty,
           I also build backend logic and APIs to support the product end-to-end
           </p>
           <div className="text-xs text-slate-700 space-y-2">
