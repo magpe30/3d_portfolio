@@ -1,59 +1,44 @@
-import { motion } from "framer-motion";
-import React from "react";
-
-import { contactLinks } from '../constants';
-import { SectionWrapper } from "../hoc";
-import { styles } from "../styles";
-import { fadeIn, slideIn } from "../utils/motion";
-
+import { contactLinks } from '../constants/index';
 const Contact = () => {
-
   return (
-    <div
-      className={`xl:mt-12 flex xl:flex-row flex-col-reverse gap-10`}
-    >
-      <motion.div
-        variants={slideIn("left", "tween", 0.2, 1)}
-        className='flex-[0.75] p-8 z-10'
-      >
-        <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={`${styles.sectionHeadText} textGradientHeadline`}>Contact</h3>
-        <div className="divider"></div>
-        <p className="mt-2">Let's connect!<br/> Feel free to send me an email or reach out.</p>
-        <div className='flex-[0.75] rounded-2xl my-10 flex flex-wrap justify-start gap-7 items-center z-10'>
-          {
-            contactLinks.map((link, index) => 
-            <div className='xs:w-[100px]' key={index}>
-              <motion.div
-                variants={fadeIn("right", "spring", 0.5, 0.75)}
-                className='w-full blue-gradient p-[1px] rounded-[20px]'
-              >
-                <div
-                  // eslint-disable-next-line react/no-unknown-property
-                  options={{
-                    max: 45,
-                    scale: 1,
-                    speed: 450,
-                  }}
-                  className='bg-tertiary rounded-[20px] py-2 px-1 flex justify-evenly items-center flex-col'
-                >
-                  <a href={link.name === "email" ? `mailto:${link.link}`: link.link} target="_blank">
-                    <img
-                      src={link.img}
-                      alt={link.name}
-                      className='w-10 h-10 rounded-full object-contain'
-                    />
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-            )
-          } 
-        </div>
-      </motion.div>
-      <div className="mainGradient setDown" />
+    <section id="contact" className="scroll-mt-24 mt-6">
+  <div className="section-line pt-6 pb-6">
+    <p className="label-upper text-slate-500 mb-2">CONTACT</p>
+
+    <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-4">
+      <p className="text-sm text-slate-700 max-w-md">
+        Open to roles and collaborations where design and engineering
+        sit close together.
+      </p>
+
+      <div className="flex flex-wrap gap-3 text-[11px] label-upper">
+        {contactLinks.map((item) => (
+          <a
+            key={item.name}
+            href={item.link}
+            target="_blank"
+            rel="noreferrer"
+            className={`
+              group
+              px-3 py-2 rounded-full border border-[var(--blue-main)]
+              flex items-center gap-2 transition-all duration-200
+              hover:-translate-y-[2px]
+              hover:shadow-[0_4px_12px_rgba(20,89,255,0.25)]
+
+              ${item.name.toLowerCase() === "email"
+                ? "bg-[var(--blue-main)] text-[var(--bg-main)] hover:bg-[var(--blue-main)]/90"
+                : "text-[var(--blue-main)] hover:bg-[var(--blue-main)] hover:text-[var(--bg-main)]"
+              }
+            `}
+          >
+            {item.name.toUpperCase()}
+          </a>
+        ))}
+      </div>
     </div>
+  </div>
+</section>
   );
 };
 
-export default SectionWrapper(Contact, "contact");
+export default Contact;

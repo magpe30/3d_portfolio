@@ -1,24 +1,26 @@
 import { BrowserRouter } from 'react-router-dom';
-import { About, Contact, Experience, Hero, Navbar, Works } from './components';
+import About from './components/About';
+import Contact from './components/Contact';
+import Experience from './components/Experience';
+import Hero from './components/Hero';
+import Navbar from './components/Navbar';
+import Playground from './components/Playground';
 
 const App = () => {
-
   return (
     <BrowserRouter>
-      <div className='relative bg-primary'>
-        <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center'>
-          <Navbar />
+      <div className="min-h-screen text-slate-900">
+        <Navbar />
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 space-y-20">
           <Hero />
-        </div>
-        <About />
-        <Experience />
-        <Works />
-        <div className="relative">
+          <About />
+          <Experience />
+          <Playground />
           <Contact />
-        </div>
+        </main>
       </div>
     </BrowserRouter>
-  )
-}
+  );
+};
 
-export default App
+export default App;

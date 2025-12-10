@@ -6,8 +6,8 @@ import {
   gmail,
   linked,
   mainWebsite,
-  roadra,
   motorway,
+  roadra,
   visionogy
 } from "../assets";
   
@@ -167,5 +167,5 @@ const contactLinks = [
   }
 ];
   
-  export { contactLinks, experiences, projects };
+export { contactLinks, experiences, projects };
 

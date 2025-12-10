@@ -1,64 +1,32 @@
-/* eslint-disable react-refresh/only-export-components */
-import { motion } from 'framer-motion';
-import { profilePicture } from '../assets';
-import { SectionWrapper } from "../hoc";
-
-import { styles } from '../styles';
-import { fadeIn, textAnimation } from '../utils/motion';
-
-const ServiceCard = () => (
-  <div className='xs:w-[250px] w-full'>
-    <motion.div
-      variants={fadeIn("right", "spring", 0.5, 0.75)}
-      className='w-full blue-gradient p-[1px] rounded-[20px] shadow-card'
-    >
-      <div
-        // eslint-disable-next-line react/no-unknown-property
-        options={{
-          max: 45,
-          scale: 1,
-          speed: 450,
-        }}
-        className='bg-tertiary rounded-[20px] py-5 px-12 min-h-[230px] flex justify-evenly items-center flex-col'
-      >
-        <img
-          src={profilePicture}
-          alt='profile picture'
-          className='w-35 h-35 rounded-full object-contain'
-        />
-      </div>
-    </motion.div>
-  </div>
-);
-
+// src/components/About.jsx
 const About = () => {
-
   return (
-    <div className='lg:flex justify-between'>
-      <div>
-        <motion.div variants={textAnimation()}>
-          <p className={styles.sectionSubText}>Introduction</p>
-          <h2 className={`${styles.sectionHeadText} textGradientHeadline`}>About me</h2>
-          <div className="divider"></div>
-        </motion.div>
-
-        <motion.p 
-          variants={fadeIn('', '', 0.2, 1)}
-          className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
-        >
-          I am a highly motivated developer with a deep interest in creating visually rich applications, 
-          drawing on my background in film and photography. Visual aesthetics are important to me, and I enjoy 
-          crafting user-friendly interfaces that are both functional and visually appealing. My work centers on 
-          creating engaging user experiences, which I find incredibly rewarding. I am passionate about the 
-          intersection of technology and creativity, and writing clean, accessible code is a priority. 
-          I'm always eager to take on new challenges and explore innovative solutions
-        </motion.p>
+    <section id="about" className="scroll-mt-24 space-y-6">
+      <div className="section-line pt-6">
+        <p className="label-upper text-slate-500 mb-2">ABOUT</p>
+        <div className="grid gap-8 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+          <p className="text-sm text-slate-700 leading-relaxed">
+          I’m a frontend developer with a film and photography background. 
+          I focus on clear, intentional interfaces.While frontend is my specialty, 
+          I also build backend logic and APIs to support the product end-to-end
+          </p>
+          <div className="text-xs text-slate-700 space-y-2">
+            <div>
+              <p className="font-medium text-[var(--blue-main)]">
+                I&apos;M GOOD AT
+              </p>
+              <p>React / Vue, TypeScript, design systems, UX flows.</p>
+            </div>
+            <div>
+              <p className="font-medium text-[var(--blue-main)]">I ENJOY</p>
+              <p>Creative tools, camera / visual experiments, Unreal Engine.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className='mt-20 flex flex-wrap gap-10'>
-        <ServiceCard />
-      </div>
-    </div>
-  )
-}
+    </section>
+  );
+};
 
-export default SectionWrapper(About, 'about');
+export default About;
+
