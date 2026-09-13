@@ -1,4 +1,8 @@
-const projects = [
+// src/components/Experience.jsx
+import { motion } from 'framer-motion';
+import { fadeIn, staggerContainer } from '../utils/motion';
+
+const experience = [
   {
     title: 'BLACKCLOAK · CYBERSECURITY',
     role: 'MOBILE · BACKEND',
@@ -18,19 +22,27 @@ const projects = [
 
 const Experience = () => {
   return (
-    <section id="projects" className="scroll-mt-24">
+    <motion.section
+      id="experience"
+      className="scroll-mt-24"
+      variants={staggerContainer(0.1, 0)}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+    >
       <div
         className="
-          bg-[var(--blue-main)]
+          callout-panel
           text-[#FFF7E8]
-          rounded-t-3xl
+          rounded-3xl
           px-6 sm:px-10 md:px-16
           py-14
-          shadow-[0_-8px_40px_rgba(0,0,0,0.15)]
+          shadow-[0_18px_45px_rgba(0,0,0,0.35)]
         "
       >
         {/* HEADER */}
-        <h2
+        <motion.h2
+          variants={fadeIn('up', 'tween', 0, 0.6)}
           className="
           heading-display text-3xl sm:text-4xl
           text-[#FFF7E8]
@@ -38,30 +50,32 @@ const Experience = () => {
           mb-12
         "
         >
-          EXPERIENCE:
-        </h2>
+          PROFESSIONAL EXPERIENCE:
+        </motion.h2>
 
         {/* TABLE-like area */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 text-sm">
 
           {/* LEFT EMPTY OR DESCRIPTION COLUMN */}
-          <div className="col-span-1">
+          <motion.div variants={fadeIn('right', 'tween', 0.1, 0.6)} className="col-span-1">
             <p className="text-[#e9e2d2] leading-relaxed opacity-80 text-[0.9rem]">
-              A quick overview of product I've built across different teams and
-              projects.
+              A quick overview of the products I've built across different teams
+              and projects.
             </p>
-          </div>
+          </motion.div>
 
           {/* RIGHT SIDE TABLE */}
           <div className="col-span-1 sm:col-span-2 flex flex-col divide-y divide-[#FFF7E8]/40">
 
-            {projects.map((p, idx) => (
-              <div
+            {experience.map((p, idx) => (
+              <motion.div
                 key={p.title}
+                variants={fadeIn('up', 'tween', 0.15 + idx * 0.08, 0.6)}
                 className="
-                  grid grid-cols-[1.4fr_1fr_0.6fr]
+                  grid grid-cols-1 sm:grid-cols-[1.4fr_1fr_0.6fr]
+                  gap-1 sm:gap-4
                   py-3
-                  items-center
+                  sm:items-center
                 "
               >
                 {/* PROJECT TITLE */}
@@ -75,10 +89,10 @@ const Experience = () => {
                 </div>
 
                 {/* TIME / CATEGORY */}
-                <div className="text-right opacity-90 text-[0.82rem]">
+                <div className="opacity-90 text-[0.82rem] sm:text-right">
                   {p.time}
                 </div>
-              </div>
+              </motion.div>
             ))}
 
           </div>
@@ -91,7 +105,7 @@ const Experience = () => {
           <span></span>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

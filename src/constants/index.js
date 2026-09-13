@@ -1,7 +1,7 @@
 const contactLinks = [
-  { 
+  {
     name: "email",
-    link: "mpelka892@gmail.com"
+    link: "mailto:mpelka892@gmail.com"
   },
   { 
     name: "linkedIn",
