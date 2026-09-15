@@ -5,94 +5,73 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: dark;
   --bg-main: #030a06;
   --green-main: #34d399;
   --green-glow: #34d399;
-  --green-glow-hover: #2bbd88;
+  --green-glow-hover: #6ee7b7;
   --green-soft: #a7f3d0;
-  --green-deep: #062018;
-  --hero-bg: #030a06;
   --on-accent: #04140c;
   --text-main: #eaf5ee;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
   margin: 0;
-  padding: 0;
-  height: 100%;
   background: var(--bg-main);
-  font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', sans-serif;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
   color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
 }
+section[id] { scroll-margin-top: 9rem; }
+:focus-visible { outline: 2px solid var(--green-soft); outline-offset: 5px; }
+section[tabindex='-1']:focus { outline: none; }
+::selection { background: #a7f3d0; color: #04140c; }
 
-/* section divider rule */
-.section-line {
-  border-top: 1px solid rgba(52, 211, 153, 0.2);
+.content-shell { width: min(100% - 3rem, 68rem); margin-inline: auto; }
+.heading-display { font-family: 'DM Serif Display', Georgia, serif; letter-spacing: -0.025em; line-height: 1.15; }
+.label-upper { text-transform: uppercase; letter-spacing: 0.13em; font-size: 0.75rem; line-height: 1.6; }
+.hero-section { padding-top: 9rem; padding-bottom: 4rem; }
+.hero-heading { font-size: clamp(2.6rem, 6.1vw, 5rem); line-height: 1.08; }
+.section-line { border-top: 1px solid rgba(167, 243, 208, 0.2); }
+.scene-backdrop { background: radial-gradient(ellipse at 75% 15%, #103a29 0, #061a12 30%, #030a06 70%); }
+.navbar-glass { background: rgba(3, 10, 6, 0.94); border-bottom: 1px solid rgba(167, 243, 208, 0.18); backdrop-filter: blur(12px); }
+.brand-link { min-height: 36px; display: inline-flex; align-items: center; gap: 0.65rem; }
+.nav-link { min-height: 44px; display: inline-flex; align-items: center; color: #bdccc3; font-size: 0.875rem; border-bottom: 2px solid transparent; }
+.nav-link:hover { color: white; }
+.nav-link[aria-current='location'] { color: var(--green-soft); border-bottom-color: var(--green-glow); }
+.skip-link { position: fixed; top: 0.75rem; left: 1rem; z-index: 60; transform: translateY(-180%); background: var(--green-soft); color: var(--on-accent); padding: 0.75rem 1rem; border-radius: 0.5rem; }
+.skip-link:focus { transform: translateY(0); }
+
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; min-height: 44px; padding: 0.7rem 1.1rem; border: 1px solid transparent; border-radius: 999px; font-size: 0.875rem; font-weight: 500; transition: background-color 160ms, border-color 160ms, color 160ms; }
+.button-primary { background: var(--green-glow); color: var(--on-accent); }
+.button-primary:hover { background: var(--green-glow-hover); }
+.button-secondary { border-color: #60766a; color: var(--text-main); }
+.button-secondary:hover { background: #153527; border-color: var(--green-soft); }
+.motion-toggle { display: inline-flex; align-items: center; gap: 0.75rem; min-height: 44px; }
+.motion-toggle:hover { color: white; }
+.motion-indicator { width: 0.5rem; height: 0.5rem; border: 1px solid #a7f3d0; border-radius: 50%; }
+.motion-indicator.is-running { background: #a7f3d0; }
+.glass-panel { background: rgba(7, 22, 14, 0.94); border: 1px solid rgba(167, 243, 208, 0.22); border-radius: 1.5rem; }
+.callout-panel { background: linear-gradient(140deg, #103d2c, #081e15); border: 1px solid rgba(167, 243, 208, 0.25); }
+.project-facts dt { font-size: 0.75rem; color: #b1c5b8; margin-bottom: 0.5rem; }
+.project-facts dd { font-size: 0.875rem; line-height: 1.6; }
+.case-study summary { cursor: pointer; padding-block: 0.75rem; color: var(--green-soft); font-weight: 500; }
+.case-study-plus { float: right; font-size: 1.25rem; line-height: 1.25; }
+.case-study[open] .case-study-plus { transform: rotate(45deg); }
+.case-heading { font-size: 1rem; font-weight: 500; margin-bottom: 0.75rem; }
+.case-copy { font-size: 0.9375rem; line-height: 1.75; color: #c7d5cc; }
+
+@media (min-width: 640px) {
+  .hero-section { padding-top: 8rem; padding-bottom: 5rem; }
+  section[id] { scroll-margin-top: 6rem; }
 }
-
-/* serif display headings */
-.heading-display {
-  font-family: 'DM Serif Display', system-ui;
-  letter-spacing: 0.08em;
+@media (max-width: 359px) {
+  .content-shell { width: calc(100% - 2rem); }
+  .hero-heading { font-size: 2.35rem; }
 }
-
-/* uppercase tiny label */
-.label-upper {
-  text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 0.7rem;
-}
-
-/* Tailwind can't apply an opacity modifier to an arbitrary var() color
-   (e.g. bg-[var(--green-main)]/90 silently renders no background at all),
-   so any translucent/hover fill uses a plain CSS class instead. */
-.navbar-glass {
-  background: rgba(3, 10, 6, 0.55);
-  border-bottom: 1px solid rgba(52, 211, 153, 0.15);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.chip-green {
-  background: rgba(52, 211, 153, 0.12);
-  color: var(--green-glow);
-}
-
-.pill-accent {
-  background: var(--green-glow);
-  color: var(--on-accent);
-}
-
-.pill-accent:hover {
-  background: var(--green-glow-hover);
-}
-
-@keyframes scroll-cue-bounce {
-  0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(6px); opacity: 1; }
-}
-
-.scroll-cue {
-  animation: scroll-cue-bounce 1.8s ease-in-out infinite;
-}
-
-.glass-panel {
-  background: rgba(7, 22, 14, 0.55);                   /* dark translucent panel */
-  border: 1px solid rgba(52, 211, 153, 0.18);          /* subtle green edge */
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);         /* soft drop shadow */
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-radius: 1.5rem;
-}
-
-.callout-panel {
-  background: linear-gradient(160deg, #0d4230, #062018);
-  border: 1px solid rgba(52, 211, 153, 0.25);
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

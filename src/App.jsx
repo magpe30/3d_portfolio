@@ -1,62 +1,46 @@
-import { useEffect, useRef } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { useState } from 'react';
+import { MotionConfig } from 'framer-motion';
+import { useMotionPreference } from './utils/useMotionPreference';
 import About from './components/About';
 import Contact from './components/Contact';
 import Experience from './components/Experience';
 import Hero from './components/Hero';
 import Navbar from './components/Navbar';
 import Projects from './components/Projects';
-import GalaxyScene from './components/canvas/GalaxyScene';
+import Background from './components/Background';
 
-const App = () => {
-  const progressRef = useRef(0);
-
-  useEffect(() => {
-    let raf = null;
-
-    const update = () => {
-      raf = null;
-      const scrollRange = document.documentElement.scrollHeight - window.innerHeight;
-      progressRef.current =
-        scrollRange > 0 ? Math.min(Math.max(window.scrollY / scrollRange, 0), 1) : 0;
-    };
-
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
+export default function App() {
+  const prefersReducedMotion = useMotionPreference();
+  const [motionPaused, setMotionPaused] = useState(false);
+  const animate = !prefersReducedMotion && !motionPaused;
 
   return (
-    <BrowserRouter>
+    <MotionConfig reducedMotion="user">
       <div className="relative min-h-screen">
-        <div className="fixed inset-0 z-0 pointer-events-none">
-          <GalaxyScene progressRef={progressRef} />
-        </div>
-
+        <Background animate={animate} />
         <div className="relative z-10">
+          <a className="skip-link" href="#projects">Skip to selected work</a>
           <Navbar />
-          <Hero />
-          <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16 space-y-20">
-            <About />
-            <Experience />
-            <Projects />
-            <Contact />
+          <main>
+            <Hero
+              animate={animate}
+              motionPaused={motionPaused}
+              onToggleMotion={() => setMotionPaused((paused) => !paused)}
+              prefersReducedMotion={prefersReducedMotion}
+            />
+            <div className="content-shell space-y-24 pb-20">
+              <Projects />
+              <Experience />
+              <About />
+              <Contact />
+            </div>
           </main>
+          <footer className="content-shell border-t border-white/[0.15] py-6 text-sm text-white/[0.65] flex flex-wrap justify-between gap-3">
+            <p>© {new Date().getFullYear()} Magda Pelka</p>
+            <a href="#home" className="hover:text-white">Back to top ↑</a>
+          </footer>
         </div>
       </div>
-    </BrowserRouter>
+    </MotionConfig>
   );
-};
-
-export default App;
+}

@@ -1,84 +1,54 @@
-// src/components/Hero.jsx
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { fadeIn, staggerContainer, textAnimation } from '../utils/motion';
 
-const Hero = () => {
+export default function Hero({ animate, motionPaused, onToggleMotion, prefersReducedMotion }) {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
-      <div className="relative z-10 flex h-full flex-col justify-between px-6 sm:px-10 pt-20 pb-8">
-        <div className="flex justify-between text-[10px] label-upper text-white/50">
-          <span>SCROLL TO DIVE IN</span>
-          <span>REMOTE · SAN DIEGO</span>
-        </div>
-
-        <motion.div
-          variants={staggerContainer(0.15, 0.1)}
-          initial="hidden"
-          animate="show"
-          className="text-center space-y-5"
-        >
-          <motion.p
-            variants={fadeIn('down', 'tween', 0, 0.6)}
-            className="label-upper text-[var(--green-soft)]"
-          >
-            PORTFOLIO / DESIGN ENGINEER
-          </motion.p>
-          <motion.h1
-            variants={textAnimation(0.1)}
-            className="heading-display text-4xl sm:text-6xl lg:text-7xl leading-none text-white"
-          >
-            HI THERE
-          </motion.h1>
-          <motion.h2
-            variants={textAnimation(0.2)}
-            className="heading-display text-4xl sm:text-6xl lg:text-7xl leading-none bg-gradient-to-r from-[var(--green-soft)] to-[var(--green-glow)] bg-clip-text text-transparent"
-          >
-            NICE TO MEET YOU
-          </motion.h2>
-          <motion.p
-            variants={fadeIn('up', 'tween', 0.3, 0.6)}
-            className="text-[11px] mt-3 text-white/60 max-w-md mx-auto"
-          >
-            I'm Magda. I build interfaces, motion, and the details in between.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          variants={fadeIn('up', 'tween', 0.3, 0.6)}
-          initial="hidden"
-          animate="show"
-          className="grid grid-cols-3 text-center text-xs label-upper text-white/50 border-t border-white/10 pt-4"
-        >
-          <div>
-            <p>STACK</p>
-            <p className="mt-1 text-[var(--green-soft)]">
-              REACT · VUE · TYPESCRIPT · NODE.JS
-            </p>
-          </div>
-          <div>
-            <p>FOCUS</p>
-            <p className="mt-1 text-[var(--green-soft)]">FULL STACK · MOTION</p>
-          </div>
-          <div>
-            <p>SCENE</p>
-            <p className="mt-1 text-[var(--green-soft)]">WEBGL · THREE.JS</p>
-          </div>
-        </motion.div>
+    <section id="home" tabIndex={-1} aria-labelledby="intro-heading" className="hero-section content-shell">
+      <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-white/75">
+        <p className="label-upper">Design engineer · Frontend UX</p>
+        <p>San Diego / Remote</p>
       </div>
 
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 text-white/40 scroll-cue">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 4v16m0 0l-6-6m6 6l6-6"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+      <motion.div
+        initial={animate ? { opacity: 0, y: 18 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: animate ? 0.65 : 0 }}
+        className="max-w-3xl py-12 sm:py-16"
+      >
+        <p className="text-lg text-[var(--green-soft)] mb-5">Hi, I’m Magda Pelka.</p>
+        <h1 id="intro-heading" className="hero-heading heading-display text-white">
+          Thoughtful interfaces.<br />
+          <span className="text-[var(--green-soft)]">Built with care.</span>
+        </h1>
+        <p className="mt-7 max-w-xl text-base sm:text-lg leading-relaxed text-white/80">
+          I build interfaces, interactions, and the logic behind them.
+          A background in film and photography shapes my eye for hierarchy,
+          motion, and the details that make a product feel considered.
+        </p>
+        <div className="flex flex-wrap gap-3 mt-8">
+          <a className="button button-primary" href="#projects">View selected work <span aria-hidden="true">↗</span></a>
+          <a className="button button-secondary" href="#contact">Get in touch</a>
+        </div>
+      </motion.div>
+
+      <div className="border-t border-white/20 pt-5 flex flex-wrap justify-between items-center gap-5 text-sm text-white/75">
+        <p>React · Vue · TypeScript <span className="mx-2 text-white/[0.35]" aria-hidden="true">/</span> Interaction & motion</p>
+        {prefersReducedMotion ? (
+          <span className="text-white/60">Reduced motion enabled</span>
+        ) : (
+          <button type="button" className="motion-toggle" aria-pressed={motionPaused} onClick={onToggleMotion}>
+            Pause background
+            <span aria-hidden="true" className={`motion-indicator ${motionPaused ? '' : 'is-running'}`} />
+          </button>
+        )}
       </div>
     </section>
   );
-};
+}
 
-export default Hero;
+Hero.propTypes = {
+  animate: PropTypes.bool.isRequired,
+  motionPaused: PropTypes.bool.isRequired,
+  onToggleMotion: PropTypes.func.isRequired,
+  prefersReducedMotion: PropTypes.bool,
+};

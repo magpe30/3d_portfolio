@@ -1,7 +1,18 @@
+import PropTypes from 'prop-types';
 // src/components/canvas/GalaxyScene.jsx
 import { useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+
+// Fiber resets its clock when a paused render loop resumes. Keep our own
+// animation time, and cap long frames so returning to a tab cannot jump ahead.
+const useAnimationTime = () => {
+  const timeRef = useRef(0);
+  useFrame((_, delta) => {
+    timeRef.current += Math.min(delta, 0.05);
+  }, -1);
+  return timeRef;
+};
 
 // Procedural soft radial-gradient sprite texture, used to fake nebula cloud
 // wisps out of a few big billboards instead of shipping an image asset.
@@ -76,7 +87,7 @@ const Nebula = () => {
 
   useFrame((_, delta) => {
     if (!groupRef.current) return;
-    groupRef.current.rotation.z += delta * 0.01;
+    groupRef.current.rotation.z += Math.min(delta, 0.05) * 0.01;
   });
 
   return (
@@ -100,6 +111,7 @@ const STAR_COUNT = 2600;
 
 const Starfield = ({ progressRef }) => {
   const pointsRef = useRef(null);
+  const timeRef = useAnimationTime();
   const starTexture = useStarTexture();
 
   const [positions, colors] = useMemo(() => {
@@ -132,11 +144,11 @@ const Starfield = ({ progressRef }) => {
     return [pos, col];
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!pointsRef.current) return;
     const progress = progressRef.current;
-    pointsRef.current.rotation.y += delta * (0.015 + progress * 0.02);
-    pointsRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.05) * 0.05;
+    pointsRef.current.rotation.y += Math.min(delta, 0.05) * (0.015 + progress * 0.02);
+    pointsRef.current.rotation.x = Math.sin(timeRef.current * 0.05) * 0.05;
   });
 
   return (
@@ -171,13 +183,18 @@ const Starfield = ({ progressRef }) => {
 };
 
 const Drift = ({ progressRef, children }) => {
-  useFrame((state) => {
-    const progress = progressRef.current;
+  const timeRef = useAnimationTime();
+  const smoothedProgress = useRef(progressRef.current);
+  useFrame((state, delta) => {
+    smoothedProgress.current = THREE.MathUtils.damp(
+      smoothedProgress.current, progressRef.current, 5, Math.min(delta, 0.05)
+    );
+    const progress = smoothedProgress.current;
     // A gentle parallax drift tied to how far down the whole page you are,
     // plus a slow ambient bob — this backdrop has to stay comfortable behind
     // a full page of reading, not just one dramatic screen, so it never
     // "dives" all the way in.
-    const t = state.clock.elapsedTime;
+    const t = timeRef.current;
     state.camera.position.x = Math.sin(t * 0.06) * 0.3;
     state.camera.position.y = Math.sin(t * 0.04) * 0.2 - progress * 0.6;
     state.camera.position.z = THREE.MathUtils.lerp(6, 4.2, progress);
@@ -190,9 +207,11 @@ const Drift = ({ progressRef, children }) => {
 // Persistent, full-page WebGL backdrop: a green-tinted starfield with soft
 // nebula billboards, gently animated by scroll progress via `progressRef`
 // (a plain ref, not React state, so scrolling never triggers a re-render).
-const GalaxyScene = ({ progressRef }) => {
+const GalaxyScene = ({ progressRef, running }) => {
   return (
     <Canvas
+      frameloop={running ? 'always' : 'never'}
+      fallback={null}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 6], fov: 45 }}
       gl={{ antialias: true, alpha: false }}
@@ -209,3 +228,8 @@ const GalaxyScene = ({ progressRef }) => {
 };
 
 export default GalaxyScene;
+
+const progressRefType = PropTypes.shape({ current: PropTypes.number.isRequired }).isRequired;
+Starfield.propTypes = { progressRef: progressRefType };
+Drift.propTypes = { progressRef: progressRefType, children: PropTypes.node };
+GalaxyScene.propTypes = { progressRef: progressRefType, running: PropTypes.bool.isRequired };

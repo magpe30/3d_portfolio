@@ -9,6 +9,11 @@ module.exports = {
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
+  overrides: [{
+    files: ['src/components/canvas/**/*.jsx'],
+    // React Three Fiber uses Three.js properties rather than DOM attributes.
+    rules: { 'react/no-unknown-property': 'off' },
+  }],
   rules: {
     'react-refresh/only-export-components': 'warn',
   },

@@ -1,95 +1,87 @@
-// src/components/Projects.jsx
-import { motion } from 'framer-motion';
-import { fadeIn, staggerContainer } from '../utils/motion';
+import { portfolio } from '../constants/portfolio';
+import ProjectMedia from './ProjectMedia';
 
-const personalProjects = [
+const decisions = [
   {
-    title: 'RIDE SD',
-    tagline: 'Motorcycle route map & GPX ride analysis',
-    description:
-      "A game-styled motorcycle route map for San Diego's canyon and mountain roads, paired with a from-scratch GPX analysis pipeline that turns ride recordings into corner-by-corner speed and lean-angle comparisons across sessions.",
-    highlights: [
-      'Real OpenStreetMap road geometry for 4 San Diego backcountry routes, with corner detection run directly on that geometry',
-      'GPX map-matching + direction-aware pass splitting, with Savitzky-Golay smoothed speed to preserve real corner shape',
-      'Side-by-side comparison of up to 3 rides per route, with per-corner speed and estimated lean angle',
-    ],
-    stack: ['NEXT.JS', 'REACT', 'THREE.JS', 'MAPLIBRE GL', 'TYPESCRIPT'],
-    link: 'https://github.com/magpe30/ride-sd',
+    title: 'Make the route the focal point',
+    text: 'A muted base map gives the selected route visual priority. Color connects each ride to its comparison data.',
+  },
+  {
+    title: 'Connect the overview to the detail',
+    text: 'Selecting a corner zooms the map to that location, keeping the numbers connected to the road.',
+  },
+  {
+    title: 'Compare the same direction',
+    text: 'The GPX pipeline separates outbound and return passes, so opposite directions are not treated as one ride.',
   },
 ];
 
-const Projects = () => {
+export default function Projects() {
   return (
-    <motion.section
-      id="projects"
-      className="scroll-mt-24 space-y-6"
-      variants={staggerContainer(0.12, 0)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }}
-    >
-      <motion.div variants={fadeIn('up', 'tween', 0, 0.6)} className="section-line pt-6">
-        <p className="label-upper text-white/50 mb-2">PERSONAL PROJECTS</p>
-        <p className="text-sm text-white/80 max-w-2xl">
-          Independent builds where I own the whole stack, end to end.
-        </p>
-      </motion.div>
+    <section id="projects" tabIndex={-1} aria-labelledby="work-heading" className="space-y-8">
+      <div className="section-line pt-6 flex flex-wrap items-end justify-between gap-3">
+        <h2 id="work-heading" className="heading-display text-3xl sm:text-4xl">Selected work</h2>
+        <p className="text-sm text-white/70">Independent design & development</p>
+      </div>
 
-      {personalProjects.map((project, idx) => (
-        <motion.div
-          key={project.title}
-          variants={fadeIn('up', 'tween', 0.15 + idx * 0.08, 0.6)}
-          className="glass-panel p-5 sm:p-7 space-y-4"
-        >
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h3 className="heading-display text-2xl text-[var(--green-glow)]">
-              {project.title}
-            </h3>
-            <a
-              href={project.link}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                label-upper text-[10px] px-3 py-1.5 rounded-full
-                border border-[var(--green-glow)] text-[var(--green-glow)]
-                transition-all duration-200
-                hover:bg-[var(--green-glow)] hover:text-[var(--on-accent)]
-                hover:-translate-y-[2px]
-              "
-            >
-              VIEW ON GITHUB
-            </a>
+      <article className="glass-panel overflow-hidden" aria-labelledby="ride-heading">
+        <ProjectMedia image={portfolio.rideImage} video={portfolio.rideVideo} />
+        <div className="p-6 sm:p-10 space-y-8">
+          <div className="grid gap-6 md:grid-cols-[1.1fr_1fr] md:items-end">
+            <div>
+              <p className="label-upper text-[var(--green-soft)] mb-4">Maps · Data visualization · Interaction</p>
+              <h3 id="ride-heading" className="heading-display text-4xl sm:text-5xl">RIDE SD</h3>
+              <p className="mt-4 text-lg text-white/[0.85] max-w-md">Explore the road. Understand the ride.</p>
+            </div>
+            <div className="space-y-5">
+              <p className="text-base text-white/80 leading-relaxed">
+                A motorcycle route map that turns GPS recordings into corner-by-corner ride comparisons.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a className="button button-secondary" href="https://github.com/magpe30/ride-sd" target="_blank" rel="noreferrer">View code <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
           </div>
 
-          <p className="text-xs label-upper text-white/50">{project.tagline}</p>
+          <dl className="project-facts grid gap-5 sm:grid-cols-3 border-y border-white/[0.15] py-6">
+            <div><dt>My role</dt><dd>Design & development</dd></div>
+            <div><dt>Scope</dt><dd>Route discovery & ride analysis</dd></div>
+            <div><dt>Built with</dt><dd>Next.js · TypeScript · MapLibre</dd></div>
+          </dl>
 
-          <p className="text-sm text-white/80 leading-relaxed">
-            {project.description}
-          </p>
-
-          <ul className="space-y-1.5 text-[0.82rem] text-white/80">
-            {project.highlights.map((point) => (
-              <li key={point} className="flex gap-2">
-                <span className="text-[var(--green-glow)] shrink-0">·</span>
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex flex-wrap gap-2 pt-1">
-            {project.stack.map((tech) => (
-              <span
-                key={tech}
-                className="text-[10px] label-upper px-2.5 py-1 rounded-full chip-green"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-      ))}
-    </motion.section>
+          <details className="case-study">
+            <summary>Inside the project <span className="case-study-plus" aria-hidden="true">+</span></summary>
+            <div className="pt-7 space-y-8">
+              <div className="grid gap-6 sm:grid-cols-2">
+                <div>
+                  <h4 className="case-heading">The problem</h4>
+                  <p className="case-copy">A GPS trace shows where you rode. Comparing what happened at each corner takes more context.</p>
+                </div>
+                <div>
+                  <h4 className="case-heading">The experience</h4>
+                  <p className="case-copy">Choose a route, add recordings, and compare up to three rides on the map and in the corner panel.</p>
+                </div>
+              </div>
+              <div>
+                <h4 className="case-heading">Design & engineering decisions</h4>
+                <ol className="grid gap-6 md:grid-cols-3 mt-5">
+                  {decisions.map((decision, index) => (
+                    <li key={decision.title} className="border-t border-[#34d399]/30 pt-4">
+                      <span className="text-sm text-[var(--green-soft)]">0{index + 1}</span>
+                      <h5 className="font-medium mt-3 mb-2">{decision.title}</h5>
+                      <p className="case-copy">{decision.text}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+              <div className="border-t border-white/[0.15] pt-6">
+                <h4 className="case-heading">Under the hood</h4>
+                <p className="case-copy max-w-3xl">GPS points are matched to real road geometry before speed is smoothed and corners are compared. Files are processed in the browser.</p>
+              </div>
+            </div>
+          </details>
+        </div>
+      </article>
+    </section>
   );
-};
-
-export default Projects;
+}

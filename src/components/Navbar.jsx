@@ -1,55 +1,52 @@
-// src/components/Navbar.jsx
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const navItems = [
-  { id: 'about', label: 'ABOUT' },
-  { id: 'experience', label: 'EXPERIENCE' },
-  { id: 'projects', label: 'PROJECTS' },
-  { id: 'contact', label: 'CONTACT' },
+  { id: 'projects', label: 'Work' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'about', label: 'About' },
+  { id: 'contact', label: 'Contact' },
 ];
 
-const Navbar = () => {
-  const [active, setActive] = useState('EXPERIENCE');
+export default function Navbar() {
+  const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    let raf = null;
+    const update = () => {
+      raf = null;
+      const marker = Math.min(window.innerHeight * 0.35, 250);
+      const current = navItems.filter(({ id }) => {
+        const section = document.getElementById(id);
+        return section && section.getBoundingClientRect().top <= marker;
+      }).at(-1);
+      const atBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 2;
+      setActive(atBottom ? 'contact' : current?.id ?? null);
+    };
+    const schedule = () => {
+      if (raf === null) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      if (raf !== null) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <header className="fixed top-0 inset-x-0 z-40 navbar-glass">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between py-3">
-          <Link
-            to="/"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-baseline gap-2"
-          >
-            <span className="text-xs label-upper text-white">MAGDA</span>
-            <span className="text-[11px] text-white/50">SOFTWARE · DESIGN ENGINEER</span>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-6 text-[11px] label-upper">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id.toLowerCase()}`}
-                onClick={() => setActive(item.label)}
-                className={`relative pb-1 ${
-                  active === item.label
-                    ? 'text-[var(--green-glow)]'
-                    : 'text-white/60 hover:text-white'
-                }`}
-              >
-                {item.label}
-                {active === item.label && (
-                  <span className="absolute inset-x-0 -bottom-0.5 h-[2px] bg-[var(--green-glow)]" />
-                )}
-              </a>
-            ))}
-          </nav>
-
-          <span className="md:hidden text-[10px] label-upper text-white/60">SCROLL</span>
-        </div>
+      <div className="content-shell flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-6 py-2">
+        <a href="#home" className="brand-link text-white font-medium">Magda Pelka <span className="text-[var(--green-glow)]" aria-hidden="true">↗</span></a>
+        <nav aria-label="Main navigation" className="flex flex-wrap gap-x-4 sm:gap-x-6">
+          {navItems.map((item) => (
+            <a key={item.id} href={`#${item.id}`} aria-current={active === item.id ? 'location' : undefined} className="nav-link">
+              {item.label}
+            </a>
+          ))}
+        </nav>
       </div>
     </header>
   );
-};
-
-export default Navbar;
+}
