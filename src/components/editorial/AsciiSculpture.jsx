@@ -1,66 +1,36 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { createBinaryGlyphs, objectPoints } from './asciiObjects';
 
-const FORMS = ['orbit', 'wave', 'knot'];
-const CYCLE_SECONDS = 6;
-const HOLD_SECONDS = 3.8;
+const FORMS = ['camera', 'laptop'];
+const CYCLE_SECONDS = 7;
+const HOLD_SECONDS = 4.5;
 const smoothstep = (value) => value * value * (3 - 2 * value);
 
-// Matching surface grids let every point travel continuously between all three forms.
-function makeSurface(shape) {
-  const points = new Float32Array(160 * 48 * 3);
-  const tau = Math.PI * 2;
-  const curve = (u) => shape === 'orbit'
-    ? [1.35 * Math.cos(u), 1.35 * Math.sin(u), 0]
-    : [(Math.sin(u) + 2 * Math.sin(2 * u)) * .53, (Math.cos(u) - 2 * Math.cos(2 * u)) * .53, -Math.sin(3 * u) * .53];
-  for (let i = 0; i < 160; i++) {
-    const u = i / 160 * tau;
-    const p = curve(u), q = curve(u + .001);
-    const tangent = q.map((v, k) => v - p[k]);
-    const length = Math.hypot(...tangent);
-    const t = tangent.map((v) => v / length);
-    const nLength = Math.hypot(t[0], t[1]);
-    const n = [-t[1] / nLength, t[0] / nLength, 0];
-    const b = [-t[2] * n[1], t[2] * n[0], t[0] * n[1] - t[1] * n[0]];
-    for (let j = 0; j < 48; j++) {
-      const index = (i * 48 + j) * 3;
-      if (shape === 'wave') {
-        points[index] = (i / 159 - .5) * 4;
-        points[index + 1] = (j / 47 - .5) * 3;
-      } else {
-        const v = j / 48 * tau;
-        const radius = shape === 'orbit' ? .52 : .32;
-        for (let k = 0; k < 3; k++) points[index + k] = p[k] + radius * (n[k] * Math.cos(v) + b[k] * Math.sin(v));
-      }
-    }
-  }
-  return points;
-}
-
-export default function AsciiSculpture({ animate, shape = 'knot', morph = false, disperse = false, onShapeChange, color = '#bd3925', className = '' }) {
+export default function AsciiSculpture({ animate, shape = 'keyboard', morph = false, disperse = false, onShapeChange, color = '#bd3925' }) {
   const canvasRef = useRef(null);
-  // Keep the exact form and its progress when motion is paused and resumed.
   const simulation = useRef({ elapsed: 0, phase: .65, index: 0, rotationX: 0, rotationY: 0 });
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
     if (!context) return undefined;
     const shapes = morph ? FORMS : [shape];
-    const surfaces = shapes.map(makeSurface);
+    const surfaces = shapes.map(objectPoints);
+    const binaryGlyphs = shape === 'desktop' && !morph ? createBinaryGlyphs(color) : null;
     const state = simulation.current;
-    let width = 0, height = 0, frame;
-    let visible = false, lastTime = 0;
-    let pointerX = 0, pointerY = 0;
-    let cursorX = -1000, cursorY = -1000, cursorStrength = 0, pointerInside = false;
-    let step = 6.5, line = step * 1.35, cols = 0;
-    let depth = new Float32Array(0);
-    const glyphs = '·:;+*xX#@';
-    const waveZ = (x, y) => Math.sin(x * 2.2 + state.phase * 2) * .36 + Math.cos(y * 2.5 + state.phase) * .28;
+    let width = 0, height = 0, frame, lastTime = 0, visible = false;
+    let pointerX = 0, pointerY = 0, cursorX = -1000, cursorY = -1000;
+    let cursorStrength = 0, pointerInside = false;
+    let step = 6, line = 8, cols = 0, rows = 0;
+    let tones = new Float32Array(0), weights = new Uint16Array(0);
+    const glyphs = '·:;=+xX#@';
 
     const draw = () => {
       if (!width || !height) return;
       context.clearRect(0, 0, width, height);
-      depth.fill(-Infinity);
+      tones.fill(0);
+      weights.fill(0);
       const index = morph ? Math.floor(state.elapsed / CYCLE_SECONDS) % shapes.length : 0;
       const nextIndex = (index + 1) % shapes.length;
       const cycleTime = state.elapsed % CYCLE_SECONDS;
@@ -70,50 +40,86 @@ export default function AsciiSculpture({ animate, shape = 'knot', morph = false,
         state.index = index;
         onShapeChange?.(index);
       }
-      const rotation = state.phase * .24 + state.rotationX, tilt = -.32 + state.rotationY;
+      const rotation = Math.sin(state.phase * .35) * .12 + state.rotationX;
+      const tilt = -.12 + Math.cos(state.phase * .4) * .035 + state.rotationY;
+      const roll = (morph ? -.025 : -.16) + Math.sin(state.phase * .3) * .025;
       const cy = Math.cos(rotation), sy = Math.sin(rotation), cx = Math.cos(tilt), sx = Math.sin(tilt);
-      const size = Math.min(width, height) * .235;
+      const cr = Math.cos(roll), sr = Math.sin(roll);
+      const size = Math.min(width, height) * .29;
+      const float = Math.sin(state.phase * .65) * 4;
       for (let i = 0; i < source.length; i += 3) {
-        const fromZ = shapes[index] === 'wave' ? waveZ(source[i], source[i + 1]) : source[i + 2];
-        const toZ = shapes[nextIndex] === 'wave' ? waveZ(destination[i], destination[i + 1]) : destination[i + 2];
         const x = source[i] + (destination[i] - source[i]) * blend;
         const y = source[i + 1] + (destination[i + 1] - source[i + 1]) * blend;
-        const z = fromZ + (toZ - fromZ) * blend;
+        const tone = source[i + 2] + (destination[i + 2] - source[i + 2]) * blend;
+        const z = tone * .14;
         const rx = x * cy + z * sy, rz = z * cy - x * sy;
         const ry = y * cx - rz * sx, dz = y * sx + rz * cx;
-        const perspective = 5.8 / (5.8 - dz);
-        const col = Math.floor((width / 2 + rx * size * perspective) / step);
-        const row = Math.floor((height / 2 + ry * size * perspective) / line);
-        if (col >= 0 && col < cols && row >= 0 && row < depth.length / cols) {
+        const perspective = 6 / (6 - dz);
+        const col = Math.floor((width / 2 + (rx * cr - ry * sr) * size * perspective) / step);
+        const row = Math.floor((height / 2 + (rx * sr + ry * cr) * size * perspective + float) / line);
+        if (col >= 0 && col < cols && row >= 0 && row < rows) {
           const cell = row * cols + col;
-          if (dz > depth[cell]) depth[cell] = dz;
+          tones[cell] += tone;
+          weights[cell]++;
         }
       }
-      context.font = `${step * 1.3}px "Courier New", monospace`;
+      context.font = `${step * 1.5}px "Courier New", monospace`;
       context.textAlign = 'center';
+      context.textBaseline = 'middle';
       context.fillStyle = color;
       const radius = Math.min(110, width * .22);
-      for (let cell = 0; cell < depth.length; cell++) {
-        if (depth[cell] === -Infinity) continue;
-        const shade = Math.max(0, Math.min(1, (depth[cell] + 2) / 4));
+      for (let cell = 0; cell < tones.length; cell++) {
+        if (!weights[cell]) continue;
+        const tone = tones[cell] / weights[cell];
         const x = (cell % cols) * step, y = Math.floor(cell / cols) * line;
         const distance = Math.hypot(x - cursorX, y - cursorY);
         const fade = disperse ? 1 - cursorStrength * (1 - smoothstep(Math.min(1, Math.max(0, (distance - radius * .25) / (radius * .75))))) : 1;
-        context.globalAlpha = (.25 + shade * .75) * fade;
-        context.fillText(glyphs[Math.min(glyphs.length - 1, Math.floor(shade * glyphs.length))], x, y);
+        context.globalAlpha = (.3 + tone * .7) * fade;
+        context.fillText(glyphs[Math.min(8, Math.floor(tone * 9))], x, y);
       }
       context.globalAlpha = 1;
+      if (binaryGlyphs) {
+        // Project the screen plane with the sculpture, then clip the binary rain.
+        const project = (px, py) => {
+          const x = (px - 160) / 88, y = (py - 128) / 88, z = .044;
+          const rx = x * cy + z * sy, rz = z * cy - x * sy;
+          const ry = y * cx - rz * sx, dz = y * sx + rz * cx;
+          const perspective = 6 / (6 - dz);
+          return [width / 2 + (rx * cr - ry * sr) * size * perspective,
+            height / 2 + (rx * sr + ry * cr) * size * perspective + float];
+        };
+        const origin = project(53, 42), right = project(267, 42), bottom = project(53, 126);
+        context.save();
+        context.transform((right[0] - origin[0]) / 214, (right[1] - origin[1]) / 214,
+          (bottom[0] - origin[0]) / 84, (bottom[1] - origin[1]) / 84, origin[0], origin[1]);
+        context.beginPath(); context.rect(0, 0, 214, 84); context.clip();
+        for (let column = 0; column < 23; column++) {
+          const length = 5 + (column * 7 % 5);
+          const speed = 17 + (column * 11 % 17);
+          const travel = 84 + length * 9 + 24;
+          const head = ((state.elapsed + 4) * speed + column * 37) % travel;
+          const pass = Math.floor(((state.elapsed + 4) * speed + column * 37) / travel);
+          for (let tail = 0; tail < length; tail++) {
+            const y = head - tail * 9;
+            if (y < 0 || y > 84) continue;
+            const edge = Math.min(1, y / 6, (84 - y) / 8);
+            context.globalAlpha = (tail === 0 ? .95 : .7 * Math.pow(1 - tail / length, 1.6)) * edge;
+            const digit = ((column * 13 + tail * 7 + pass * 3) ^ ((column * 11 + tail * 5) >> 2)) & 1;
+            context.drawImage(binaryGlyphs[digit], 4 + column * 9, y - 4, 7, 9);
+          }
+        }
+        context.restore();
+      }
     };
     const tick = (time) => {
-      if (!visible || document.hidden) {
-        lastTime = time;
-      } else if (time - lastTime > 32) {
+      if (!visible || document.hidden) lastTime = time;
+      else if (time - lastTime > 32) {
         const delta = Math.min((time - lastTime) / 1000, .1);
         state.phase += delta;
         state.elapsed += delta;
         lastTime = time;
-        state.rotationX += (pointerX - state.rotationX) * .045;
-        state.rotationY += (pointerY - state.rotationY) * .045;
+        state.rotationX += (pointerX - state.rotationX) * .06;
+        state.rotationY += (pointerY - state.rotationY) * .06;
         cursorStrength += ((pointerInside ? 1 : 0) - cursorStrength) * .18;
         draw();
       }
@@ -126,10 +132,12 @@ export default function AsciiSculpture({ animate, shape = 'knot', morph = false,
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      step = width < 400 ? 5.5 : 6.5;
-      line = step * 1.35;
+      step = width < 400 ? 4 : 5;
+      line = step * 1.3;
       cols = Math.ceil(width / step);
-      depth = new Float32Array(cols * Math.ceil(height / line));
+      rows = Math.ceil(height / line);
+      tones = new Float32Array(cols * rows);
+      weights = new Uint16Array(cols * rows);
       draw();
     });
     const visibility = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
@@ -139,8 +147,8 @@ export default function AsciiSculpture({ animate, shape = 'knot', morph = false,
       cursorX = event.clientX - rect.left;
       cursorY = event.clientY - rect.top;
       pointerInside = true;
-      pointerX = (cursorX / rect.width - .5) * (disperse ? .3 : 1.4);
-      pointerY = (cursorY / rect.height - .5) * (disperse ? .2 : .7);
+      pointerX = (cursorX / rect.width - .5) * .5;
+      pointerY = (cursorY / rect.height - .5) * .3;
     };
     const reset = () => { pointerX = 0; pointerY = 0; pointerInside = false; };
     resize.observe(canvas);
@@ -156,15 +164,14 @@ export default function AsciiSculpture({ animate, shape = 'knot', morph = false,
       canvas.removeEventListener('pointerleave', reset);
     };
   }, [animate, color, shape, morph, disperse, onShapeChange]);
-  return <canvas ref={canvasRef} className={`ascii-sculpture ${className}`} aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="ascii-sculpture" aria-hidden="true" />;
 }
 
 AsciiSculpture.propTypes = {
   animate: PropTypes.bool.isRequired,
-  shape: PropTypes.oneOf(['knot', 'orbit', 'wave']),
+  shape: PropTypes.oneOf(['keyboard', 'desktop', 'camera', 'laptop']),
   morph: PropTypes.bool,
   disperse: PropTypes.bool,
   onShapeChange: PropTypes.func,
   color: PropTypes.string,
-  className: PropTypes.string,
 };

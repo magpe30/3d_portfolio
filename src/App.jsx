@@ -5,13 +5,12 @@ import { useSmoothScroll } from './utils/useSmoothScroll';
 import { contactLinks } from './constants';
 import { portfolio } from './constants/portfolio';
 import AsciiSculpture from './components/editorial/AsciiSculpture';
-import AsciiFace from './components/editorial/AsciiFace';
 import Reveal from './components/editorial/Reveal';
 import ProjectMedia from './components/ProjectMedia';
 
 const jobs = [
-  { company: 'BlackCloak', url: 'https://blackcloak.io/', role: 'Software Engineer', dates: '2025 — Present', description: 'Leading a shared Tamagui and TypeScript component library across mobile, web, and internal tools.', stack: 'React Native / TypeScript / Tamagui' },
-  { company: 'Roadra', url: 'https://roadra.com/', role: 'Software Developer', dates: '2023 — 2025', description: 'Built marketplace interfaces and AI workflows that reduced dealer profiling time by 60%.', stack: 'Vue.js / TypeScript / Node.js' },
+  { company: 'BlackCloak', url: 'https://blackcloak.io/', role: 'Software Engineer', dates: '2025 — Present', description: 'Leading a shared Tamagui and TypeScript component library across mobile, web, and internal tools.', stack: 'React Native / TypeScript / Tamagui / Cursor / Claude' },
+  { company: 'Roadra', url: 'https://roadra.com/', role: 'Software Developer', dates: '2023 — 2025', description: 'Built marketplace interfaces and AI workflows that reduced dealer profiling time by 60%.', stack: 'Vue.js / TypeScript / Node.js / OpenAI' },
   { company: 'Motorway', url: 'https://motorway.com/', role: 'Junior Frontend Engineer', dates: '2021 — 2023', description: 'Built reusable React components and improved Storybook performance and customer-facing UX.', stack: 'React / TypeScript / Storybook' },
 ];
 
@@ -75,7 +74,7 @@ export default function App() {
               <Reveal animate={animate} delay={.3} className="hero-note"><span className="intro-star" aria-hidden="true">✳</span><p>I bring an eye for film and a mind for engineering to the things you see, touch, and interact with.</p></Reveal>
             </motion.div>
             <motion.div className="hero-art" style={animate ? { y: sculptureY } : undefined}>
-              <AsciiFace animate={animate} />
+              <AsciiSculpture animate={animate} shape="desktop" />
             </motion.div>
             <div className="hero-bottom">
               <a className="scroll-link micro" href="#projects"><span className="scroll-arrow" aria-hidden="true">↓</span> Scroll to explore</a>
