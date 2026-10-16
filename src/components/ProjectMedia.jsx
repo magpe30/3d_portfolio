@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMotionPreference } from '../utils/useMotionPreference';
 
-export default function ProjectMedia({ image, video }) {
+export default function ProjectMedia({ image, video, motionEnabled = true }) {
   const figureRef = useRef(null);
   const videoRef = useRef(null);
-  const reducedMotion = useMotionPreference();
+  const systemReducedMotion = useMotionPreference();
+  const reducedMotion = systemReducedMotion || !motionEnabled;
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(!document.hidden);
   const [playback, setPlayback] = useState(null);
@@ -108,6 +109,7 @@ export default function ProjectMedia({ image, video }) {
 }
 
 ProjectMedia.propTypes = {
+  motionEnabled: PropTypes.bool,
   image: PropTypes.shape({
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
