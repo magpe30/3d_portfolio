@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Reveal({ children, className = '', animate = true, delay = 0 }) {
   return (
-    <motion.div className={className}
+    <motion.div className={`reveal ${className}`.trim()}
       initial={animate ? { opacity: 0, y: 36 } : false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: .12 }}

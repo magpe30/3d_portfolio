@@ -6,6 +6,7 @@ import { contactLinks } from './constants';
 import { portfolio } from './constants/portfolio';
 import AsciiSculpture from './components/editorial/AsciiSculpture';
 import Reveal from './components/editorial/Reveal';
+import HeadingReveal from './components/editorial/HeadingReveal';
 import ProjectMedia from './components/ProjectMedia';
 
 const jobs = [
@@ -62,15 +63,14 @@ export default function App() {
               <a key={id} href={`#${id}`} aria-current={activeSection === id ? 'location' : undefined}>{label}<span className="nav-dot" /></a>
             ))}
           </nav>
-          <a className="contact-link" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a>
+          <a className="contact-link" href="#contact" aria-label="Let’s talk">Let’s talk <span aria-hidden="true">↗</span></a>
         </header>
 
         <main>
           <section id="home" tabIndex={-1} ref={heroRef} className="hero" aria-labelledby="hero-title">
             <div className="hero-topline micro"><span>Creative developer & design engineer</span><span>San Diego, CA <span className="clock">{time}</span></span></div>
             <motion.div className="hero-copy" style={animate ? { y: heroY } : undefined}>
-              <Reveal animate={animate} delay={.1}><h1 id="hero-title" lang="pl"><em>Cześć,</em></h1></Reveal>
-              <Reveal animate={animate} delay={.2} className="hero-intro"><p>I build thoughtful interfaces with a little personality.</p></Reveal>
+              <HeadingReveal as="h1" animate={animate} id="hero-title"><span className="hero-greeting" lang="pl"><em>Cześć,</em></span>I build thoughtful interfaces with a little <em className="heading-accent">personality.</em></HeadingReveal>
               <Reveal animate={animate} delay={.3} className="hero-note"><span className="intro-star" aria-hidden="true">✳</span><p>I bring an eye for film and a mind for engineering to the things you see, touch, and interact with.</p></Reveal>
             </motion.div>
             <motion.div className="hero-art" style={animate ? { y: sculptureY } : undefined}>
@@ -83,7 +83,7 @@ export default function App() {
           </section>
 
           <section id="projects" tabIndex={-1} className="work-section section-pad" aria-labelledby="work-title">
-            <Reveal animate={animate} className="section-heading"><p className="micro">01 / Selected work</p><h2 id="work-title">Made to <em>move.</em></h2></Reveal>
+            <div className="section-heading"><p className="micro">01 / Selected work</p><HeadingReveal animate={animate} id="work-title">Made to <em>move.</em></HeadingReveal></div>
             <article className="featured-project" aria-labelledby="ride-title">
               <div className="project-stage" ref={workRef}>
                 <div className="stage-top micro"><span>Independent project / Design + development</span><span>001</span></div>
@@ -95,24 +95,23 @@ export default function App() {
                 </motion.div>
               </div>
               <Reveal animate={animate} className="project-info">
-                <div><p className="micro muted">Maps / Data / Interaction</p><h3 id="ride-title">RIDE SD<span className="project-number">(01)</span></h3></div>
+                <div><p className="micro muted">Maps / Data / Interaction</p><h3 id="ride-title" className="heading heading--title">RIDE SD<span className="project-number">(01)</span></h3></div>
                 <div className="project-description"><p>GPS recordings become interactive routes and corner-by-corner ride comparisons.</p><a className="text-link" href="https://github.com/magpe30/ride-sd" target="_blank" rel="noreferrer">Explore the code <span aria-hidden="true">↗</span></a></div>
               </Reveal>
               <details className="case-study">
                 <summary><span className="micro">A closer look</span><span>From a line on a map to the story of a ride.</span><span className="case-plus" aria-hidden="true">+</span></summary>
-                <div className="case-content"><div><p className="micro">The challenge</p><h4>Context, beyond coordinates.</h4><p>A GPS trace shows where you rode. Understanding what happened at each corner takes more context. RIDE SD connects the map, speed profile, and corner detail in one interface.</p></div><div><p className="micro">The decisions</p><h4>Keep the road in focus.</h4><p>A muted map gives the route visual priority. Selecting a corner zooms to its location. Outbound and return passes are separated, so comparisons stay meaningful.</p></div><div><p className="micro">Under the hood</p><h4>Built from the ground up.</h4><p>Next.js, TypeScript, and MapLibre. GPS points match real road geometry before speed is smoothed and corners are compared. Files are processed in the browser.</p></div></div>
+                <div className="case-content"><div><p className="micro">The challenge</p><h4 className="heading heading--subtitle">Context, beyond coordinates.</h4><p>A GPS trace shows where you rode. Understanding what happened at each corner takes more context. RIDE SD connects the map, speed profile, and corner detail in one interface.</p></div><div><p className="micro">The decisions</p><h4 className="heading heading--subtitle">Keep the road in focus.</h4><p>A muted map gives the route visual priority. Selecting a corner zooms to its location. Outbound and return passes are separated, so comparisons stay meaningful.</p></div><div><p className="micro">Under the hood</p><h4 className="heading heading--subtitle">Built from the ground up.</h4><p>Next.js, TypeScript, and MapLibre. GPS points match real road geometry before speed is smoothed and corners are compared. Files are processed in the browser.</p></div></div>
               </details>
             </article>
           </section>
 
           <section id="about" tabIndex={-1} className="about-section section-pad" aria-labelledby="about-title">
             <div className="section-label micro"><span>02 / Behind the work</span></div>
-            <Reveal animate={animate}><h2 id="about-title">An engineer’s mind.<br />A filmmaker’s <em>eye.</em></h2></Reveal>
+            <HeadingReveal animate={animate} id="about-title">An engineer’s mind.<br />A filmmaker’s <em className="heading-accent">eye.</em></HeadingReveal>
             <div className="about-grid">
               <Reveal animate={animate} className="about-copy" delay={.15}>
-                <p className="about-lead">The best interfaces don’t<br /><span className="keep-together">just work.</span><br />They make you <em className="keep-together">feel something.</em></p>
-                <p>Before software, there was film and photography. That way of seeing never left: the composition, the rhythm, the small detail that changes the whole frame.</p>
-                <p>Today, I bring that perspective to product interfaces, shared component systems, and the logic behind them. I like making complex things feel natural—and leaving a little room for the unexpected.</p>
+                <p>I’m a software engineer with a background in film and photography. That background shapes how I approach interfaces: I care about how they look, how they respond, and how naturally people can use them.</p>
+                <p>I build web and mobile applications and shared component libraries, bringing design awareness to practical engineering. I enjoy making complex features easier to use and writing code that’s clear, reliable, and easy for others to build on.</p>
               </Reveal>
               <div className="about-sculpture">
                 <AsciiSculpture animate={animate} morph disperse color="#e8e5d9" onShapeChange={setStudy} />
@@ -122,13 +121,13 @@ export default function App() {
           </section>
 
           <section id="experience" tabIndex={-1} className="experience-section section-pad" aria-labelledby="experience-title">
-            <div className="experience-header"><h2 id="experience-title">Where I’ve been.</h2><span className="micro">The experience so far / 2021—Now</span></div>
+            <div className="experience-header"><span className="micro">The experience so far / 2021—Now</span><HeadingReveal animate={animate} id="experience-title">Where I’ve <em>been.</em></HeadingReveal></div>
             <div className="experience-list">
               {jobs.map((job, index) => (
                 <Reveal animate={animate} key={job.company}>
                   <a className="experience-row" href={job.url} target="_blank" rel="noreferrer" aria-label={`${job.company} — visit company website (opens in a new tab)`}>
                     <span className="micro job-index">0{index + 1}</span>
-                    <div><h3>{job.company}</h3><p className="job-dates micro">{job.dates}</p></div>
+                    <div><h3 className="heading heading--title">{job.company}</h3><p className="job-dates micro">{job.dates}</p></div>
                     <div className="job-detail"><p className="job-role">{job.role}</p><p>{job.description}</p><p className="micro job-stack">{job.stack}</p></div>
                     <span className="job-mark" aria-hidden="true">↗</span>
                   </a>
@@ -139,12 +138,12 @@ export default function App() {
 
           <section id="contact" tabIndex={-1} className="contact-section section-pad" aria-labelledby="contact-title">
             <div className="section-label micro"><span>03 / Your next idea</span><span><span className="status-dot" /> Open to the right opportunity</span></div>
-            <Reveal animate={animate}><h2 id="contact-title">Let’s make<br /><a href="mailto:mpelka892@gmail.com"><em>something move.</em><span aria-hidden="true">↗</span></a></h2></Reveal>
+            <HeadingReveal animate={animate} id="contact-title">Let’s make<br /><a className="heading-link" href="mailto:mpelka892@gmail.com"><em>something move.</em><span className="heading-link-arrow" aria-hidden="true">↗</span></a></HeadingReveal>
             <div className="contact-bottom"><p>Have a project, a role, or a good conversation?<br />I’d love to hear what you have in mind.</p><a className="email-link" href="mailto:mpelka892@gmail.com">mpelka892@gmail.com <span aria-hidden="true">↗</span></a></div>
             <footer><span className="micro">© {new Date().getFullYear()} Magda Pelka</span><div className="social-links">{contactLinks.filter((link) => link.name !== 'Email').map((link) => <a key={link.name} href={link.link} target="_blank" rel="noreferrer">{link.name} ↗</a>)}</div><a href="#home" className="back-top micro">Back to top ↑</a></footer>
           </section>
         </main>
-        <button type="button" className="motion-toggle micro" onClick={() => setPaused((value) => !value)} aria-pressed={paused} disabled={reducedMotion} aria-label={reducedMotion ? 'Reduced motion enabled by your system' : paused ? 'Enable animations' : 'Pause animations'}><span className={animate ? 'motion-bars running' : 'motion-bars'} aria-hidden="true"><i /><i /><i /><i /></span>{reducedMotion ? 'Motion reduced' : paused ? 'Motion off' : 'Motion on'}</button>
+        <button type="button" className="motion-toggle micro" onClick={() => setPaused((value) => !value)} aria-pressed={paused} disabled={reducedMotion} aria-label={reducedMotion ? 'Motion reduced — system preference' : paused ? 'Motion off — enable animations' : 'Motion on — pause animations'}><span className={animate ? 'motion-bars running' : 'motion-bars'} aria-hidden="true"><i /><i /><i /><i /></span>{reducedMotion ? 'Motion reduced' : paused ? 'Motion off' : 'Motion on'}</button>
       </div>
     </MotionConfig>
   );

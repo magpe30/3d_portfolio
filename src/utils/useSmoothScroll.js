@@ -16,6 +16,7 @@ export function useSmoothScroll(enabled) {
       if (!target) return;
       event.preventDefault();
       scroll.scrollTo(target, {
+        offset: -(document.querySelector('.site-header')?.getBoundingClientRect().height ?? 0),
         duration: 1.1,
         lerp: 0,
         easing: (t) => 1 - Math.pow(1 - t, 4),

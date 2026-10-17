@@ -2,6 +2,7 @@ const MASK_WIDTH = 320;
 const MASK_HEIGHT = 256;
 const POINT_COUNT = 7200;
 const cache = new Map();
+export const DESKTOP_SCREEN = { x: 43, y: 24, width: 234, height: 122 };
 
 function roundedRect(ctx, x, y, width, height, radius, color) {
   ctx.fillStyle = color;
@@ -40,23 +41,19 @@ function drawKeyboard(ctx) {
 
 function drawDesktop(ctx) {
   // A separate screen, stand, and keyboard keep the desktop silhouette clear.
-  roundedRect(ctx, 145, 140, 30, 32, 3, '#999999');
-  roundedRect(ctx, 120, 169, 80, 7, 4, '#cccccc');
-  roundedRect(ctx, 39, 18, 242, 132, 9, '#bcbcbc');
-  roundedRect(ctx, 46, 25, 228, 108, 3, '#333333');
-  roundedRect(ctx, 53, 32, 214, 94, 2, '#505050');
-  ctx.fillStyle = '#929292';
-  ctx.fillRect(53, 32, 214, 10);
-  ctx.fillStyle = '#dedede';
-  for (let x = 60; x < 80; x += 7) ctx.fillRect(x, 35, 3, 3);
-  roundedRect(ctx, 156, 139, 8, 3, 1, '#efefef');
+  roundedRect(ctx, 150, 156, 20, 22, 3, '#999999');
+  roundedRect(ctx, 122, 176, 76, 5, 3, '#cccccc');
+  roundedRect(ctx, 35, 19, 250, 146, 6, '#777777');
+  roundedRect(ctx, 35, 16, 250, 146, 6, '#bcbcbc');
+  roundedRect(ctx, 39, 20, 242, 130, 3, '#626262');
+  roundedRect(ctx, 157, 153, 6, 2, 1, '#efefef');
   ctx.save();
   ctx.translate(35, 154);
   ctx.scale(.78, .4);
   drawKeyboard(ctx);
   ctx.restore();
   // Leave the display clear for the falling digits.
-  ctx.clearRect(53, 42, 214, 84);
+  ctx.clearRect(DESKTOP_SCREEN.x, DESKTOP_SCREEN.y, DESKTOP_SCREEN.width, DESKTOP_SCREEN.height);
 }
 
 // Cache the two glyphs so each rain frame only composites small images.

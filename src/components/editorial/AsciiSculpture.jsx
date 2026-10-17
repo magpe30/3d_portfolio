@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { createBinaryGlyphs, objectPoints } from './asciiObjects';
+import { createBinaryGlyphs, DESKTOP_SCREEN, objectPoints } from './asciiObjects';
 
 const FORMS = ['camera', 'laptop'];
 const CYCLE_SECONDS = 7;
@@ -40,9 +40,9 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
         state.index = index;
         onShapeChange?.(index);
       }
-      const rotation = Math.sin(state.phase * .35) * .12 + state.rotationX;
-      const tilt = -.12 + Math.cos(state.phase * .4) * .035 + state.rotationY;
-      const roll = (morph ? -.025 : -.16) + Math.sin(state.phase * .3) * .025;
+      const rotation = Math.sin(state.phase * .35) * (binaryGlyphs ? .045 : .12) + state.rotationX;
+      const tilt = (binaryGlyphs ? -.06 : -.12) + Math.cos(state.phase * .4) * .035 + state.rotationY;
+      const roll = (binaryGlyphs ? -.035 : morph ? -.025 : -.16) + Math.sin(state.phase * .3) * (binaryGlyphs ? .01 : .025);
       const cy = Math.cos(rotation), sy = Math.sin(rotation), cx = Math.cos(tilt), sx = Math.sin(tilt);
       const cr = Math.cos(roll), sr = Math.sin(roll);
       const size = Math.min(width, height) * .29;
@@ -51,10 +51,11 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
         const x = source[i] + (destination[i] - source[i]) * blend;
         const y = source[i + 1] + (destination[i + 1] - source[i + 1]) * blend;
         const tone = source[i + 2] + (destination[i + 2] - source[i + 2]) * blend;
-        const z = tone * .14;
+        // The monitor and its content share one flat plane, keeping the bezel straight.
+        const z = binaryGlyphs ? 0 : tone * .14;
         const rx = x * cy + z * sy, rz = z * cy - x * sy;
         const ry = y * cx - rz * sx, dz = y * sx + rz * cx;
-        const perspective = 6 / (6 - dz);
+        const perspective = binaryGlyphs ? 1 : 6 / (6 - dz);
         const col = Math.floor((width / 2 + (rx * cr - ry * sr) * size * perspective) / step);
         const row = Math.floor((height / 2 + (rx * sr + ry * cr) * size * perspective + float) / line);
         if (col >= 0 && col < cols && row >= 0 && row < rows) {
@@ -81,28 +82,28 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
       if (binaryGlyphs) {
         // Project the screen plane with the sculpture, then clip the binary rain.
         const project = (px, py) => {
-          const x = (px - 160) / 88, y = (py - 128) / 88, z = .044;
+          const x = (px - 160) / 88, y = (py - 128) / 88, z = 0;
           const rx = x * cy + z * sy, rz = z * cy - x * sy;
-          const ry = y * cx - rz * sx, dz = y * sx + rz * cx;
-          const perspective = 6 / (6 - dz);
-          return [width / 2 + (rx * cr - ry * sr) * size * perspective,
-            height / 2 + (rx * sr + ry * cr) * size * perspective + float];
+          const ry = y * cx - rz * sx;
+          return [width / 2 + (rx * cr - ry * sr) * size,
+            height / 2 + (rx * sr + ry * cr) * size + float];
         };
-        const origin = project(53, 42), right = project(267, 42), bottom = project(53, 126);
+        const screen = DESKTOP_SCREEN;
+        const origin = project(screen.x, screen.y), right = project(screen.x + screen.width, screen.y), bottom = project(screen.x, screen.y + screen.height);
         context.save();
-        context.transform((right[0] - origin[0]) / 214, (right[1] - origin[1]) / 214,
-          (bottom[0] - origin[0]) / 84, (bottom[1] - origin[1]) / 84, origin[0], origin[1]);
-        context.beginPath(); context.rect(0, 0, 214, 84); context.clip();
-        for (let column = 0; column < 23; column++) {
+        context.transform((right[0] - origin[0]) / screen.width, (right[1] - origin[1]) / screen.width,
+          (bottom[0] - origin[0]) / screen.height, (bottom[1] - origin[1]) / screen.height, origin[0], origin[1]);
+        context.beginPath(); context.rect(0, 0, screen.width, screen.height); context.clip();
+        for (let column = 0; column < 25; column++) {
           const length = 5 + (column * 7 % 5);
           const speed = 17 + (column * 11 % 17);
-          const travel = 84 + length * 9 + 24;
+          const travel = screen.height + length * 9 + 24;
           const head = ((state.elapsed + 4) * speed + column * 37) % travel;
           const pass = Math.floor(((state.elapsed + 4) * speed + column * 37) / travel);
           for (let tail = 0; tail < length; tail++) {
             const y = head - tail * 9;
-            if (y < 0 || y > 84) continue;
-            const edge = Math.min(1, y / 6, (84 - y) / 8);
+            if (y < 0 || y > screen.height) continue;
+            const edge = Math.min(1, y / 6, (screen.height - y) / 8);
             context.globalAlpha = (tail === 0 ? .95 : .7 * Math.pow(1 - tail / length, 1.6)) * edge;
             const digit = ((column * 13 + tail * 7 + pass * 3) ^ ((column * 11 + tail * 5) >> 2)) & 1;
             context.drawImage(binaryGlyphs[digit], 4 + column * 9, y - 4, 7, 9);
@@ -147,8 +148,8 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
       cursorX = event.clientX - rect.left;
       cursorY = event.clientY - rect.top;
       pointerInside = true;
-      pointerX = (cursorX / rect.width - .5) * .5;
-      pointerY = (cursorY / rect.height - .5) * .3;
+      pointerX = (cursorX / rect.width - .5) * (binaryGlyphs ? .18 : .5);
+      pointerY = (cursorY / rect.height - .5) * (binaryGlyphs ? .12 : .3);
     };
     const reset = () => { pointerX = 0; pointerY = 0; pointerInside = false; };
     resize.observe(canvas);
