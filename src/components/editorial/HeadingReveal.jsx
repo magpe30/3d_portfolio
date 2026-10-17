@@ -32,15 +32,13 @@ export default function HeadingReveal({ as: Tag = 'h2', children, animate = true
   const content = splitLetters(children, cursor);
 
   useEffect(() => {
-    if (!animate) return undefined;
+    if (!animate || visible) return undefined;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio >= .15) setVisible(true);
-      // Reset only after leaving the viewport, avoiding flicker at the reveal threshold.
-      else if (!entry.isIntersecting) setVisible(false);
     }, { threshold: [0, .15], rootMargin: '0px 0px -8% 0px' });
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [animate]);
+  }, [animate, visible]);
 
   return (
     <Tag ref={ref} id={id} className={`heading heading-reveal ${className}`.trim()}

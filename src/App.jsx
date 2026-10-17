@@ -29,8 +29,8 @@ export default function App() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY = useSpring(useTransform(heroProgress, [0, 1], [0, 160]), { stiffness: 80, damping: 25 });
-  const sculptureY = useSpring(useTransform(heroProgress, [0, 1], [0, -100]), { stiffness: 80, damping: 25 });
+  const heroY = useSpring(useTransform(heroProgress, [0, 1], [0, 48]), { stiffness: 80, damping: 25 });
+  const sculptureY = useSpring(useTransform(heroProgress, [0, 1], [0, -40]), { stiffness: 80, damping: 25 });
   const { scrollYProgress: workProgress } = useScroll({ target: workRef, offset: ['start end', 'center center'] });
   const workRotate = useSpring(useTransform(workProgress, [0, 1], [7, 0]), { stiffness: 90, damping: 28 });
   const workScale = useSpring(useTransform(workProgress, [0, 1], [.88, 1]), { stiffness: 90, damping: 28 });
@@ -70,11 +70,10 @@ export default function App() {
           <section id="home" tabIndex={-1} ref={heroRef} className="hero" aria-labelledby="hero-title">
             <div className="hero-topline micro"><span>Creative developer & design engineer</span><span>San Diego, CA <span className="clock">{time}</span></span></div>
             <motion.div className="hero-copy" style={animate ? { y: heroY } : undefined}>
-              <HeadingReveal as="h1" animate={animate} id="hero-title"><span className="hero-greeting" lang="pl"><em>Cześć,</em></span>I build thoughtful interfaces with a little <em className="heading-accent">personality.</em></HeadingReveal>
-              <Reveal animate={animate} delay={.3} className="hero-note"><span className="intro-star" aria-hidden="true">✳</span><p>I bring an eye for film and a mind for engineering to the things you see, touch, and interact with.</p></Reveal>
+              <HeadingReveal as="h1" animate={animate} id="hero-title"><span className="hero-title-line">I build thoughtful interfaces</span><span className="hero-title-line">with a little <em className="heading-accent">personality.</em></span></HeadingReveal>
             </motion.div>
             <motion.div className="hero-art" style={animate ? { y: sculptureY } : undefined}>
-              <AsciiSculpture animate={animate} shape="desktop" />
+              <AsciiSculpture animate={animate} shape="laptop" binaryRain />
             </motion.div>
             <div className="hero-bottom">
               <a className="scroll-link micro" href="#projects"><span className="scroll-arrow" aria-hidden="true">↓</span> Scroll to explore</a>

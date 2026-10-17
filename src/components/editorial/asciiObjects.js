@@ -2,7 +2,10 @@ const MASK_WIDTH = 320;
 const MASK_HEIGHT = 256;
 const POINT_COUNT = 7200;
 const cache = new Map();
-export const DESKTOP_SCREEN = { x: 43, y: 24, width: 234, height: 122 };
+export const SCREENS = {
+  monitor: { x: 43, y: 24, width: 234, height: 122 },
+  laptop: { x: 69, y: 49, width: 182, height: 119 },
+};
 
 function roundedRect(ctx, x, y, width, height, radius, color) {
   ctx.fillStyle = color;
@@ -39,21 +42,16 @@ function drawKeyboard(ctx) {
   ctx.fillRect(258, 198, 12, 2);
 }
 
-function drawDesktop(ctx) {
-  // A separate screen, stand, and keyboard keep the desktop silhouette clear.
+function drawMonitor(ctx) {
+  // A standalone display and stand; the screen is reserved for live binary rain.
   roundedRect(ctx, 150, 156, 20, 22, 3, '#999999');
   roundedRect(ctx, 122, 176, 76, 5, 3, '#cccccc');
   roundedRect(ctx, 35, 19, 250, 146, 6, '#777777');
   roundedRect(ctx, 35, 16, 250, 146, 6, '#bcbcbc');
   roundedRect(ctx, 39, 20, 242, 130, 3, '#626262');
   roundedRect(ctx, 157, 153, 6, 2, 1, '#efefef');
-  ctx.save();
-  ctx.translate(35, 154);
-  ctx.scale(.78, .4);
-  drawKeyboard(ctx);
-  ctx.restore();
   // Leave the display clear for the falling digits.
-  ctx.clearRect(DESKTOP_SCREEN.x, DESKTOP_SCREEN.y, DESKTOP_SCREEN.width, DESKTOP_SCREEN.height);
+  ctx.clearRect(SCREENS.monitor.x, SCREENS.monitor.y, SCREENS.monitor.width, SCREENS.monitor.height);
 }
 
 // Cache the two glyphs so each rain frame only composites small images.
@@ -154,14 +152,17 @@ function spatialKey(x, y) {
   return key;
 }
 
-export function objectPoints(shape) {
-  if (cache.has(shape)) return cache.get(shape);
+export function objectPoints(shape, clearScreen = false) {
+  const key = `${shape}:${clearScreen}`;
+  if (cache.has(key)) return cache.get(key);
   const mask = document.createElement('canvas');
   mask.width = MASK_WIDTH;
   mask.height = MASK_HEIGHT;
   const ctx = mask.getContext('2d', { willReadFrequently: true });
   if (!ctx) return new Float32Array(0);
-  ({ keyboard: drawKeyboard, desktop: drawDesktop, camera: drawCamera, laptop: drawLaptop })[shape](ctx);
+  ({ keyboard: drawKeyboard, monitor: drawMonitor, camera: drawCamera, laptop: drawLaptop })[shape](ctx);
+  const screen = clearScreen && SCREENS[shape];
+  if (screen) ctx.clearRect(screen.x, screen.y, screen.width, screen.height);
   const pixels = ctx.getImageData(0, 0, MASK_WIDTH, MASK_HEIGHT).data;
   const samples = [];
   for (let y = 0; y < MASK_HEIGHT; y += 2) {
@@ -178,6 +179,6 @@ export function objectPoints(shape) {
     points[i * 3 + 1] = (sample.y - 128) / 88;
     points[i * 3 + 2] = sample.tone;
   }
-  cache.set(shape, points);
+  cache.set(key, points);
   return points;
 }

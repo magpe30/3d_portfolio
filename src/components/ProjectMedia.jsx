@@ -53,7 +53,7 @@ export default function ProjectMedia({ image, video, motionEnabled = true }) {
 
   const togglePlayback = () => {
     const element = videoRef.current;
-    if (playing) {
+    if (!element.paused) {
       setPlayback(false);
       element.pause();
     } else {
@@ -81,6 +81,7 @@ export default function ProjectMedia({ image, video, motionEnabled = true }) {
         />
         {!failed && (
           <video
+            id="ride-preview"
             ref={videoRef}
             src={shouldLoad ? video.src : undefined}
             poster={image.src}
@@ -100,7 +101,7 @@ export default function ProjectMedia({ image, video, motionEnabled = true }) {
       <figcaption id="ride-media-caption" className="flex flex-wrap items-center justify-between gap-x-5 gap-y-2 px-5 sm:px-8 py-3 text-sm text-white/75">
         <p>Ride playback, from speed profile to corner detail.</p>
         <div className="flex flex-wrap items-center gap-5">
-          {!failed && <button type="button" onClick={togglePlayback} className="min-h-[44px] text-[var(--green-soft)] hover:text-white">{playing ? 'Pause preview' : 'Play preview'}</button>}
+          {!failed && <button type="button" aria-controls="ride-preview" onClick={togglePlayback} className="min-h-[44px] hover:text-white">{playing ? 'Pause preview' : 'Play preview'}</button>}
           <a href={image.src} target="_blank" rel="noreferrer" className="inline-flex items-center min-h-[44px] hover:text-white">View screenshot <span aria-hidden="true" className="ml-2">↗</span></a>
         </div>
       </figcaption>

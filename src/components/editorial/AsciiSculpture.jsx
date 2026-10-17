@@ -1,13 +1,13 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { createBinaryGlyphs, DESKTOP_SCREEN, objectPoints } from './asciiObjects';
+import { createBinaryGlyphs, SCREENS, objectPoints } from './asciiObjects';
 
 const FORMS = ['camera', 'laptop'];
 const CYCLE_SECONDS = 7;
 const HOLD_SECONDS = 4.5;
 const smoothstep = (value) => value * value * (3 - 2 * value);
 
-export default function AsciiSculpture({ animate, shape = 'keyboard', morph = false, disperse = false, onShapeChange, color = '#bd3925' }) {
+export default function AsciiSculpture({ animate, shape = 'keyboard', binaryRain = false, morph = false, disperse = false, onShapeChange, color = '#bd3925' }) {
   const canvasRef = useRef(null);
   const simulation = useRef({ elapsed: 0, phase: .65, index: 0, rotationX: 0, rotationY: 0 });
 
@@ -16,8 +16,9 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
     const context = canvas.getContext('2d');
     if (!context) return undefined;
     const shapes = morph ? FORMS : [shape];
-    const surfaces = shapes.map(objectPoints);
-    const binaryGlyphs = shape === 'desktop' && !morph ? createBinaryGlyphs(color) : null;
+    const screen = !morph && (binaryRain || shape === 'monitor') ? SCREENS[shape] : null;
+    const surfaces = shapes.map((form) => objectPoints(form, !!screen));
+    const binaryGlyphs = screen ? createBinaryGlyphs(color) : null;
     const state = simulation.current;
     let width = 0, height = 0, frame, lastTime = 0, visible = false;
     let pointerX = 0, pointerY = 0, cursorX = -1000, cursorY = -1000;
@@ -45,7 +46,7 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
       const roll = (binaryGlyphs ? -.035 : morph ? -.025 : -.16) + Math.sin(state.phase * .3) * (binaryGlyphs ? .01 : .025);
       const cy = Math.cos(rotation), sy = Math.sin(rotation), cx = Math.cos(tilt), sx = Math.sin(tilt);
       const cr = Math.cos(roll), sr = Math.sin(roll);
-      const size = Math.min(width, height) * .29;
+      const size = Math.min(width, height) * (binaryGlyphs ? .4 : .29);
       const float = Math.sin(state.phase * .65) * 4;
       for (let i = 0; i < source.length; i += 3) {
         const x = source[i] + (destination[i] - source[i]) * blend;
@@ -88,13 +89,12 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
           return [width / 2 + (rx * cr - ry * sr) * size,
             height / 2 + (rx * sr + ry * cr) * size + float];
         };
-        const screen = DESKTOP_SCREEN;
         const origin = project(screen.x, screen.y), right = project(screen.x + screen.width, screen.y), bottom = project(screen.x, screen.y + screen.height);
         context.save();
         context.transform((right[0] - origin[0]) / screen.width, (right[1] - origin[1]) / screen.width,
           (bottom[0] - origin[0]) / screen.height, (bottom[1] - origin[1]) / screen.height, origin[0], origin[1]);
         context.beginPath(); context.rect(0, 0, screen.width, screen.height); context.clip();
-        for (let column = 0; column < 25; column++) {
+        for (let column = 0; column < Math.floor(screen.width / 9); column++) {
           const length = 5 + (column * 7 % 5);
           const speed = 17 + (column * 11 % 17);
           const travel = screen.height + length * 9 + 24;
@@ -164,13 +164,14 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', morph = fa
       canvas.removeEventListener('pointermove', pointer);
       canvas.removeEventListener('pointerleave', reset);
     };
-  }, [animate, color, shape, morph, disperse, onShapeChange]);
+  }, [animate, color, shape, binaryRain, morph, disperse, onShapeChange]);
   return <canvas ref={canvasRef} className="ascii-sculpture" aria-hidden="true" />;
 }
 
 AsciiSculpture.propTypes = {
   animate: PropTypes.bool.isRequired,
-  shape: PropTypes.oneOf(['keyboard', 'desktop', 'camera', 'laptop']),
+  shape: PropTypes.oneOf(['keyboard', 'monitor', 'camera', 'laptop']),
+  binaryRain: PropTypes.bool,
   morph: PropTypes.bool,
   disperse: PropTypes.bool,
   onShapeChange: PropTypes.func,
