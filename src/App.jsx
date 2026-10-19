@@ -8,6 +8,7 @@ import AsciiSculpture from './components/editorial/AsciiSculpture';
 import Reveal from './components/editorial/Reveal';
 import HeadingReveal from './components/editorial/HeadingReveal';
 import ProjectMedia from './components/ProjectMedia';
+import ExperienceLink from './components/editorial/ExperienceLink';
 
 const jobs = [
   { company: 'BlackCloak', url: 'https://blackcloak.io/', role: 'Software Engineer', dates: '2025 — Present', description: 'Leading a shared Tamagui and TypeScript component library across mobile, web, and internal tools.', stack: 'React Native / TypeScript / Tamagui / Cursor / Claude' },
@@ -124,12 +125,7 @@ export default function App() {
             <div className="experience-list">
               {jobs.map((job, index) => (
                 <Reveal animate={animate} key={job.company}>
-                  <a className="experience-row" href={job.url} target="_blank" rel="noreferrer" aria-label={`${job.company} — visit company website (opens in a new tab)`}>
-                    <span className="micro job-index">0{index + 1}</span>
-                    <div><h3 className="heading heading--title">{job.company}</h3><p className="job-dates micro">{job.dates}</p></div>
-                    <div className="job-detail"><p className="job-role">{job.role}</p><p>{job.description}</p><p className="micro job-stack">{job.stack}</p></div>
-                    <span className="job-mark" aria-hidden="true">↗</span>
-                  </a>
+                  <ExperienceLink job={job} index={index} animate={animate} />
                 </Reveal>
               ))}
             </div>

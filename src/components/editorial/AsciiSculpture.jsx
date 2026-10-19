@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { createBinaryGlyphs, SCREENS, objectPoints } from './asciiObjects';
 
-const FORMS = ['camera', 'laptop'];
+const FORMS = ['camera', 'corded-keyboard'];
 const CYCLE_SECONDS = 7;
 const HOLD_SECONDS = 4.5;
 const smoothstep = (value) => value * value * (3 - 2 * value);
@@ -170,7 +170,7 @@ export default function AsciiSculpture({ animate, shape = 'keyboard', binaryRain
 
 AsciiSculpture.propTypes = {
   animate: PropTypes.bool.isRequired,
-  shape: PropTypes.oneOf(['keyboard', 'monitor', 'camera', 'laptop']),
+  shape: PropTypes.oneOf(['keyboard', 'corded-keyboard', 'monitor', 'camera', 'laptop']),
   binaryRain: PropTypes.bool,
   morph: PropTypes.bool,
   disperse: PropTypes.bool,

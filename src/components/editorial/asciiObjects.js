@@ -42,6 +42,26 @@ function drawKeyboard(ctx) {
   ctx.fillRect(258, 198, 12, 2);
 }
 
+function drawCordedKeyboard(ctx) {
+  // Give the cable room to curve above the keyboard, like a desk viewed from above.
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(160, 108);
+  ctx.bezierCurveTo(144, 65, 238, 83, 275, 42);
+  ctx.bezierCurveTo(286, 30, 290, 22, 301, 17);
+  ctx.strokeStyle = '#777777';
+  ctx.lineWidth = 6;
+  ctx.stroke();
+  ctx.strokeStyle = '#dddddd';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.translate(0, 48);
+  ctx.scale(1, .82);
+  drawKeyboard(ctx);
+  ctx.restore();
+}
+
 function drawMonitor(ctx) {
   // A standalone display and stand; the screen is reserved for live binary rain.
   roundedRect(ctx, 150, 156, 20, 22, 3, '#999999');
@@ -160,7 +180,7 @@ export function objectPoints(shape, clearScreen = false) {
   mask.height = MASK_HEIGHT;
   const ctx = mask.getContext('2d', { willReadFrequently: true });
   if (!ctx) return new Float32Array(0);
-  ({ keyboard: drawKeyboard, monitor: drawMonitor, camera: drawCamera, laptop: drawLaptop })[shape](ctx);
+  ({ keyboard: drawKeyboard, 'corded-keyboard': drawCordedKeyboard, monitor: drawMonitor, camera: drawCamera, laptop: drawLaptop })[shape](ctx);
   const screen = clearScreen && SCREENS[shape];
   if (screen) ctx.clearRect(screen.x, screen.y, screen.width, screen.height);
   const pixels = ctx.getImageData(0, 0, MASK_WIDTH, MASK_HEIGHT).data;

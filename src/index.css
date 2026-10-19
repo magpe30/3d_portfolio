@@ -143,20 +143,24 @@ nav a:hover .nav-dot, nav a[aria-current] .nav-dot { transform: scale(1); }
 .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--section-gap); margin-top: var(--section-gap); align-items: start; }
 .about-copy > p { max-width: 440px; color: #c0c5b6; }
 .about-copy > p + p { margin-top: var(--space-copy); }
-.about-sculpture { position: relative; height: clamp(300px, 29vw, 440px); min-width: 0; }
+.about-sculpture { position: relative; height: clamp(300px, 29vw, 440px); min-width: 0; margin-top: calc(-16px - clamp(32px, 4vw, 64px)); }
 .about-sculpture canvas { height: 100%; }
 .sculpture-index { position: absolute; right: 0; bottom: 0; font-size: clamp(100px, 11vw, 160px); line-height: 1; letter-spacing: -.08em; color: #8c987655; pointer-events: none; font-variant-numeric: tabular-nums; }
 .experience-section { background: #e3e3d8; }
 .experience-header { display: grid; gap: var(--label-gap); margin-bottom: var(--section-gap); }
 .experience-header .micro { grid-row: 1; color: #5a5d50; }
-.experience-row { display: grid; grid-template-columns: 40px 1fr 1.5fr 40px; gap: var(--section-gap); padding: var(--space-item) 0; border-top: 1px solid #bfc2b0; }
+.experience-row { display: grid; grid-template-columns: 40px 1fr 1.5fr 140px; gap: var(--section-gap); padding: var(--space-item) 12px; border-top: 1px solid #bfc2b0; }
 .job-index { padding-top: 8px; color: #5a5d50; }
 .job-dates { color: #5a5d50; margin-top: var(--space-copy); }
 .job-detail { max-width: 470px; }
 .job-detail > p { color: #5a5d50; }
 .job-detail .job-role { color: var(--ink); margin-bottom: var(--space-copy); }
 .job-detail .job-stack { margin-top: var(--space-copy); color: #5a5d50; }
-.job-mark { font-size: 24px; color: #7e836c; }
+.job-action { display: flex; align-items: center; justify-content: space-between; gap: 20px; align-self: center; color: #ac3523; }
+.job-visit { font-size: var(--type-ui); line-height: 1.35; opacity: 0; transform: translateY(4px); transition: opacity .3s, transform .3s; }
+.job-mark { width: 32px; height: 32px; flex-shrink: 0; transform: rotate(0deg); transform-origin: center; transition: transform .65s cubic-bezier(.4, 0, .2, 1), color .3s; }
+.visit-follower { position: fixed; top: 0; left: 0; z-index: 65; pointer-events: none; width: 176px; height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; border-radius: 999px; background: var(--accent); color: var(--paper); font-family: var(--font-sans); font-size: var(--type-ui); box-shadow: 0 8px 24px #5423181a; will-change: transform; }
+.visit-follower-arrow { font-size: 23px; line-height: 1; }
 .contact-section { background: #b93e29; color: #f1e8d7; }
 .contact-section .section-label { color: #f1e8d7; }
 .contact-section .status-dot { background: #e9d7b3; margin-right: 9px; }
@@ -219,10 +223,11 @@ html:has([data-motion='off']) { scroll-behavior: auto; }
   .case-content { grid-template-columns: 1fr; }
   .about-grid { grid-template-columns: 1fr; gap: var(--section-gap); }
   .about-copy { max-width: 500px; }
-  .about-sculpture { height: 310px; }
+  .about-sculpture { height: 310px; margin-top: -24px; }
   .experience-row { grid-template-columns: 22px 1fr 40px; gap: var(--space-copy); }
-  .job-index { grid-row: 1 / 3; }
-  .job-mark { grid-column: 3; grid-row: 1; }
+  .job-index { grid-row: 1 / 4; }
+  .job-action { grid-column: 2 / -1; }
+  .job-visit { white-space: nowrap; }
   .job-detail { grid-column: 2 / -1; }
   .contact-section .section-label > span:last-child { max-width: 145px; text-align: right; }
   .heading-link { gap: var(--space-copy); }
@@ -251,9 +256,12 @@ html:has([data-motion='off']) { scroll-behavior: auto; }
 html.lenis { scroll-behavior: auto; }
 section[tabindex='-1']:focus { outline: none; }
 .experience-row { transition: background-color .25s ease; }
-.job-mark { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; transform-origin: center; transition: transform .3s ease, color .3s ease; }
-.experience-row:hover, .experience-row:focus-visible { background: #daddce; }
-.experience-row:hover .job-mark, .experience-row:focus-visible .job-mark { transform: translate(3px, -3px) scale(1.3); color: var(--accent); }
+.experience-row:is(:hover, :focus-visible) { background: #daddce; }
+.experience-row:focus-visible .job-visit, .experience-row[data-follow="off"]:hover .job-visit { opacity: 1; transform: translateY(0); }
+.experience-row:is(:hover, :focus-visible) .job-mark { transform: rotate(-45deg); color: var(--accent); }
+@media (hover: none) {
+  .job-visit { opacity: 1; transform: none; }
+}
 @media (max-width: 380px) {
   .about-sculpture { height: 270px; }
 }
