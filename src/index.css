@@ -11,7 +11,7 @@
   --paper: #eeede6;
   --ink: #25251f;
   --accent: #bc3d28;
-  --line: #c7c7bc;
+  --line: #000;
   --muted: #68685e;
   --rail: 74px;
   --gutter: clamp(24px, 4.4vw, 80px);
@@ -149,7 +149,7 @@ nav a:hover .nav-dot, nav a[aria-current] .nav-dot { transform: scale(1); }
 .experience-section { background: #e3e3d8; }
 .experience-header { display: grid; gap: var(--label-gap); margin-bottom: var(--section-gap); }
 .experience-header .micro { grid-row: 1; color: #5a5d50; }
-.experience-row { display: grid; grid-template-columns: 40px 1fr 1.5fr 140px; gap: var(--section-gap); padding: var(--space-item) 12px; border-top: 1px solid #bfc2b0; }
+.experience-row { display: grid; grid-template-columns: 40px 1fr 1.5fr 140px; gap: var(--section-gap); padding: var(--space-item) 12px; border-top: 1px solid var(--line); }
 .job-index { padding-top: 8px; color: #5a5d50; }
 .job-dates { color: #5a5d50; margin-top: var(--space-copy); }
 .job-detail { max-width: 470px; }
