@@ -7,16 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "playwright test",
+    "format": "prettier --write src tests playwright.config.js vite.config.js postcss.config.js .eslintrc.cjs",
+    "format:check": "prettier --check src tests playwright.config.js vite.config.js postcss.config.js .eslintrc.cjs"
   },
   "dependencies": {
-    "@react-three/fiber": "^8.11.1",
     "framer-motion": "^9.0.7",
     "lenis": "^1.3.27",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "three": "^0.149.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
@@ -27,8 +28,9 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.26",
+    "playwright": "^1.64.1",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.6",
+    "prettier": "^3.9.10",
     "vite": "^4.1.0"
   }
 }

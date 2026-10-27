@@ -5,10 +5,18 @@ import 'lenis/dist/lenis.css';
 export function useSmoothScroll(enabled) {
   useEffect(() => {
     if (!enabled) return undefined;
-    const scroll = new Lenis({ autoRaf: true, lerp: .09, smoothWheel: true, syncTouch: false });
+    const scroll = new Lenis({ autoRaf: true, lerp: 0.09, smoothWheel: true, syncTouch: false });
     // Preserve native touch scrolling and explicit focus/history for anchor links.
     const onAnchor = (event) => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      )
+        return;
       const link = event.target.closest('a[href^="#"]');
       if (!link) return;
       const hash = link.getAttribute('href');

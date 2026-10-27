@@ -9,5 +9,9 @@ const subscribe = (onChange) => {
 
 // Subscribe directly so changing the OS preference also updates an open page.
 export function useMotionPreference() {
-  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => true);
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia(query).matches,
+    () => true,
+  );
 }

@@ -1,54 +1,47 @@
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
+import { useLocalTime } from '../utils/useLocalTime';
+import HeadingReveal from './editorial/HeadingReveal';
+import AsciiBlocks from './editorial/AsciiBlocks';
 
-export default function Hero({ animate, motionPaused, onToggleMotion, prefersReducedMotion }) {
+export default function Hero({ animate }) {
+  const time = useLocalTime('America/Los_Angeles');
   return (
-    <section id="home" tabIndex={-1} aria-labelledby="intro-heading" className="hero-section content-shell">
-      <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-white/75">
-        <p className="label-upper">Design engineer · Frontend UX</p>
-        <p>San Diego / Remote</p>
+    <section id="home" tabIndex={-1} className="hero" aria-labelledby="hero-title">
+      <div className="hero-topline micro">
+        <span>Creative developer & design engineer</span>
+        <span>
+          San Diego, CA <span className="clock">{time}</span>
+        </span>
       </div>
-
-      <motion.div
-        initial={animate ? { opacity: 0, y: 18 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: animate ? 0.65 : 0 }}
-        className="max-w-3xl py-12 sm:py-16"
-      >
-        <p className="text-lg text-[var(--green-soft)] mb-5">Hi, I’m Magda Pelka.</p>
-        <h1 id="intro-heading" className="hero-heading heading-display text-white">
-          Thoughtful interfaces.<br />
-          <span className="text-[var(--green-soft)]">Built with care.</span>
-        </h1>
-        <p className="mt-7 max-w-xl text-base sm:text-lg leading-relaxed text-white/80">
-          I build interfaces, interactions, and the logic behind them.
-          A background in film and photography shapes my eye for hierarchy,
-          motion, and the details that make a product feel considered.
-        </p>
-        <div className="flex flex-wrap gap-3 mt-8">
-          <a className="button button-primary" href="#projects">View selected work <span aria-hidden="true">↗</span></a>
-          <a className="button button-secondary" href="#contact">Get in touch</a>
+      <div className="hero-copy">
+        <HeadingReveal as="h1" animate={animate} id="hero-title">
+          <span className="hero-title-line">I build thoughtful interfaces</span>
+          <span className="hero-title-line">
+            with a little <em className="heading-accent">personality.</em>
+          </span>
+        </HeadingReveal>
+      </div>
+      <div className="hero-support">
+        <div className="hero-intro">
+          <p>I design and build web interfaces, interactive tools, and shared component systems.</p>
+          <div className="hero-links">
+            <a className="text-link" href="#projects">
+              View selected work <span aria-hidden="true">↓</span>
+            </a>
+            <a className="text-link" href="#experience">
+              My experience <span aria-hidden="true">↓</span>
+            </a>
+          </div>
         </div>
-      </motion.div>
-
-      <div className="border-t border-white/20 pt-5 flex flex-wrap justify-between items-center gap-5 text-sm text-white/75">
-        <p>React · Vue · TypeScript <span className="mx-2 text-white/[0.35]" aria-hidden="true">/</span> Interaction & motion</p>
-        {prefersReducedMotion ? (
-          <span className="text-white/60">Reduced motion enabled</span>
-        ) : (
-          <button type="button" className="motion-toggle" aria-pressed={motionPaused} onClick={onToggleMotion}>
-            Pause background
-            <span aria-hidden="true" className={`motion-indicator ${motionPaused ? '' : 'is-running'}`} />
-          </button>
-        )}
+        <div className="hero-art">
+          <AsciiBlocks animate={animate} />
+        </div>
+      </div>
+      <div className="hero-bottom micro">
+        <span>Design in the details. Care in the code.</span>
+        <span>Selected work / {new Date().getFullYear()}</span>
       </div>
     </section>
   );
 }
-
-Hero.propTypes = {
-  animate: PropTypes.bool.isRequired,
-  motionPaused: PropTypes.bool.isRequired,
-  onToggleMotion: PropTypes.func.isRequired,
-  prefersReducedMotion: PropTypes.bool,
-};
+Hero.propTypes = { animate: PropTypes.bool.isRequired };

@@ -35,7 +35,14 @@ function drawKeyboard(ctx) {
       ctx.fillRect(x + 4, y + 4, 4, 3);
     }
   });
-  for (const [x, width] of [[41, 24], [69, 24], [97, 104], [205, 22], [231, 22], [257, 21]]) {
+  for (const [x, width] of [
+    [41, 24],
+    [69, 24],
+    [97, 104],
+    [205, 22],
+    [231, 22],
+    [257, 21],
+  ]) {
     roundedRect(ctx, x, 169, width, 15, 2, '#dcdcdc');
   }
   ctx.fillStyle = '#efefef';
@@ -57,7 +64,7 @@ function drawCordedKeyboard(ctx) {
   ctx.lineWidth = 3;
   ctx.stroke();
   ctx.translate(0, 48);
-  ctx.scale(1, .82);
+  ctx.scale(1, 0.82);
   drawKeyboard(ctx);
   ctx.restore();
 }
@@ -71,7 +78,12 @@ function drawMonitor(ctx) {
   roundedRect(ctx, 39, 20, 242, 130, 3, '#626262');
   roundedRect(ctx, 157, 153, 6, 2, 1, '#efefef');
   // Leave the display clear for the falling digits.
-  ctx.clearRect(SCREENS.monitor.x, SCREENS.monitor.y, SCREENS.monitor.width, SCREENS.monitor.height);
+  ctx.clearRect(
+    SCREENS.monitor.x,
+    SCREENS.monitor.y,
+    SCREENS.monitor.width,
+    SCREENS.monitor.height,
+  );
 }
 
 // Cache the two glyphs so each rain frame only composites small images.
@@ -106,7 +118,12 @@ function drawCamera(ctx) {
   }
   roundedRect(ctx, 235, 92, 32, 17, 3, '#e8e8e8');
   roundedRect(ctx, 238, 95, 26, 11, 1, '#9a9a9a');
-  for (const [radius, color] of [[61, '#dddddd'], [54, '#454545'], [46, '#ababab'], [39, '#303030']]) {
+  for (const [radius, color] of [
+    [61, '#dddddd'],
+    [54, '#454545'],
+    [46, '#ababab'],
+    [39, '#303030'],
+  ]) {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.arc(162, 146, radius, 0, Math.PI * 2);
@@ -114,7 +131,7 @@ function drawCamera(ctx) {
   }
   const glass = ctx.createRadialGradient(150, 132, 4, 162, 146, 33);
   glass.addColorStop(0, '#bcbcbc');
-  glass.addColorStop(.4, '#666666');
+  glass.addColorStop(0.4, '#666666');
   glass.addColorStop(1, '#999999');
   ctx.fillStyle = glass;
   ctx.beginPath();
@@ -126,7 +143,7 @@ function drawCamera(ctx) {
   ctx.fill();
   ctx.fillStyle = '#e0e0e0';
   ctx.beginPath();
-  ctx.ellipse(150, 132, 8, 5, -.7, 0, Math.PI * 2);
+  ctx.ellipse(150, 132, 8, 5, -0.7, 0, Math.PI * 2);
   ctx.fill();
 }
 
@@ -140,26 +157,41 @@ function drawLaptop(ctx) {
   ctx.fillRect(69, 49, 182, 10);
   for (let x = 76; x < 94; x += 7) ctx.fillRect(x, 52, 3, 3);
   // A quiet editor window, with enough contrast to survive the ASCII sampling.
-  const lines = [[85, 78, 47], [99, 92, 88], [99, 106, 66], [112, 120, 98], [99, 134, 50], [85, 148, 27]];
+  const lines = [
+    [85, 78, 47],
+    [99, 92, 88],
+    [99, 106, 66],
+    [112, 120, 98],
+    [99, 134, 50],
+    [85, 148, 27],
+  ];
   for (const [x, y, length] of lines) {
     ctx.fillStyle = y === 78 || y === 148 ? '#d5d5d5' : '#969696';
     ctx.fillRect(x, y, length, 4);
   }
   ctx.fillStyle = '#aaaaaa';
   ctx.beginPath();
-  ctx.moveTo(56, 184); ctx.lineTo(264, 184); ctx.lineTo(299, 224); ctx.lineTo(21, 224);
-  ctx.closePath(); ctx.fill();
+  ctx.moveTo(56, 184);
+  ctx.lineTo(264, 184);
+  ctx.lineTo(299, 224);
+  ctx.lineTo(21, 224);
+  ctx.closePath();
+  ctx.fill();
   ctx.fillStyle = '#626262';
   for (let row = 0; row < 3; row++) {
     for (let col = 0; col < 13; col++) {
-      ctx.fillRect(65 - row * 5 + col * (14 + row * .6), 190 + row * 7, 10 + row, 4);
+      ctx.fillRect(65 - row * 5 + col * (14 + row * 0.6), 190 + row * 7, 10 + row, 4);
     }
   }
   roundedRect(ctx, 133, 213, 54, 8, 2, '#727272');
   ctx.fillStyle = '#dddddd';
   ctx.beginPath();
-  ctx.moveTo(21, 224); ctx.lineTo(299, 224); ctx.lineTo(291, 232); ctx.lineTo(29, 232);
-  ctx.closePath(); ctx.fill();
+  ctx.moveTo(21, 224);
+  ctx.lineTo(299, 224);
+  ctx.lineTo(291, 232);
+  ctx.lineTo(29, 232);
+  ctx.closePath();
+  ctx.fill();
 }
 
 // Spatial ordering keeps nearby points together as they move into the next object.
@@ -180,7 +212,13 @@ export function objectPoints(shape, clearScreen = false) {
   mask.height = MASK_HEIGHT;
   const ctx = mask.getContext('2d', { willReadFrequently: true });
   if (!ctx) return new Float32Array(0);
-  ({ keyboard: drawKeyboard, 'corded-keyboard': drawCordedKeyboard, monitor: drawMonitor, camera: drawCamera, laptop: drawLaptop })[shape](ctx);
+  ({
+    keyboard: drawKeyboard,
+    'corded-keyboard': drawCordedKeyboard,
+    monitor: drawMonitor,
+    camera: drawCamera,
+    laptop: drawLaptop,
+  })[shape](ctx);
   const screen = clearScreen && SCREENS[shape];
   if (screen) ctx.clearRect(screen.x, screen.y, screen.width, screen.height);
   const pixels = ctx.getImageData(0, 0, MASK_WIDTH, MASK_HEIGHT).data;
@@ -188,13 +226,14 @@ export function objectPoints(shape, clearScreen = false) {
   for (let y = 0; y < MASK_HEIGHT; y += 2) {
     for (let x = 0; x < MASK_WIDTH; x += 2) {
       const pixel = (y * MASK_WIDTH + x) * 4;
-      if (pixels[pixel + 3] > 120) samples.push({ x, y, tone: pixels[pixel] / 255, key: spatialKey(x, y) });
+      if (pixels[pixel + 3] > 120)
+        samples.push({ x, y, tone: pixels[pixel] / 255, key: spatialKey(x, y) });
     }
   }
   samples.sort((a, b) => a.key - b.key);
   const points = new Float32Array(POINT_COUNT * 3);
   for (let i = 0; i < POINT_COUNT; i++) {
-    const sample = samples[Math.floor(i / POINT_COUNT * samples.length)];
+    const sample = samples[Math.floor((i / POINT_COUNT) * samples.length)];
     points[i * 3] = (sample.x - 160) / 88;
     points[i * 3 + 1] = (sample.y - 128) / 88;
     points[i * 3 + 2] = sample.tone;
