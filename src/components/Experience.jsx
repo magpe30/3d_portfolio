@@ -27,9 +27,9 @@ export default function Experience({ animate }) {
       </div>
       <a
         className="text-link resume-link"
-        href="mailto:mpelka892@gmail.com?subject=R%C3%A9sum%C3%A9%20request"
+        href="mailto:mpelka892@gmail.com?subject=CV%20request"
       >
-        Request my résumé by email <span aria-hidden="true">↗</span>
+        Request CV <span aria-hidden="true">↗</span>
       </a>
     </section>
   );
