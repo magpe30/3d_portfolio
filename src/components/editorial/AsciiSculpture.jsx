@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { asciiRipple } from './asciiRipple';
 import { createBinaryGlyphs, SCREENS, objectPoints } from './asciiObjects';
 
 const FORMS = ['camera', 'corded-keyboard'];
@@ -12,7 +13,7 @@ export default function AsciiSculpture({
   shape = 'keyboard',
   binaryRain = false,
   morph = false,
-  disperse = false,
+  ripple = false,
   onShapeChange,
   color = '#bd3925',
 }) {
@@ -104,21 +105,19 @@ export default function AsciiSculpture({
       context.textAlign = 'center';
       context.textBaseline = 'middle';
       context.fillStyle = color;
-      const radius = Math.min(110, width * 0.22);
+      const radius = Math.min(170, width * 0.25);
+      const ripplePointer = { x: cursorX, y: cursorY, strength: cursorStrength };
       for (let cell = 0; cell < tones.length; cell++) {
         if (!weights[cell]) continue;
         const tone = tones[cell] / weights[cell];
         const x = (cell % cols) * step,
           y = Math.floor(cell / cols) * line;
-        const distance = Math.hypot(x - cursorX, y - cursorY);
-        const fade = disperse
-          ? 1 -
-            cursorStrength *
-              (1 -
-                smoothstep(Math.min(1, Math.max(0, (distance - radius * 0.25) / (radius * 0.75)))))
-          : 1;
-        context.globalAlpha = (0.3 + tone * 0.7) * fade;
-        context.fillText(glyphs[Math.min(8, Math.floor(tone * 9))], x, y);
+        const displaced =
+          ripple && animate
+            ? asciiRipple(x, y, ripplePointer, state.phase, radius)
+            : { x, y, alphaBoost: 0 };
+        context.globalAlpha = Math.min(1, 0.3 + tone * 0.7 + displaced.alphaBoost);
+        context.fillText(glyphs[Math.min(8, Math.floor(tone * 9))], displaced.x, displaced.y);
       }
       context.globalAlpha = 1;
       if (binaryGlyphs) {
@@ -228,7 +227,7 @@ export default function AsciiSculpture({
       canvas.removeEventListener('pointermove', pointer);
       canvas.removeEventListener('pointerleave', reset);
     };
-  }, [animate, color, shape, binaryRain, morph, disperse, onShapeChange]);
+  }, [animate, color, shape, binaryRain, morph, ripple, onShapeChange]);
   return <canvas ref={canvasRef} className="ascii-sculpture" aria-hidden="true" />;
 }
 
@@ -237,7 +236,7 @@ AsciiSculpture.propTypes = {
   shape: PropTypes.oneOf(['keyboard', 'corded-keyboard', 'monitor', 'camera', 'laptop']),
   binaryRain: PropTypes.bool,
   morph: PropTypes.bool,
-  disperse: PropTypes.bool,
+  ripple: PropTypes.bool,
   onShapeChange: PropTypes.func,
   color: PropTypes.string,
 };

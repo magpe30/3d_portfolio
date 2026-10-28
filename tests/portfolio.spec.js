@@ -110,6 +110,49 @@ test('a failed video preserves the screenshot and explains the fallback', async 
   await expect(page.getByRole('link', { name: 'View screenshot' })).toBeVisible();
 });
 
+test('case study panels animate both ways and reverse without jumping', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  for (const selector of ['.challenge-notes', '.technical-notes']) {
+    const panel = page.locator(selector);
+    const content = panel.locator('.case-disclosure-content');
+    await panel.locator('summary').focus();
+    await page.keyboard.press('Enter');
+    const opening = await content.evaluate((element) => {
+      const animation = element.getAnimations()[0];
+      animation.pause();
+      animation.currentTime = 100;
+      return { height: element.getBoundingClientRect().height, full: element.scrollHeight };
+    });
+    expect(opening.height).toBeGreaterThan(0);
+    expect(opening.height).toBeLessThan(opening.full * 0.15);
+
+    const reversal = await panel.evaluate((element) => {
+      const content = element.querySelector('.case-disclosure-content');
+      const before = content.getBoundingClientRect().height;
+      element.querySelector('summary').click();
+      const animation = content.getAnimations()[0];
+      animation.pause();
+      animation.currentTime = 0;
+      const after = content.getBoundingClientRect().height;
+      animation.currentTime = 200;
+      return { before, after, closing: content.getBoundingClientRect().height };
+    });
+    expect(Math.abs(reversal.before - reversal.after)).toBeLessThan(1);
+    expect(reversal.closing).toBeLessThan(reversal.after);
+    await expect(panel).toHaveAttribute('open');
+    await content.evaluate((element) => element.getAnimations()[0].finish());
+    await expect(panel).not.toHaveAttribute('open');
+    await expect(content).toBeHidden();
+
+    await panel.locator('summary').press('Space');
+    await expect.poll(() => content.evaluate((element) => element.getAnimations().length)).toBe(0);
+    await expect(panel).toHaveAttribute('open');
+    await panel.locator('summary').press('Enter');
+    await expect(panel).not.toHaveAttribute('open');
+  }
+});
+
 test('both case study disclosures open independently with the keyboard', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
@@ -268,4 +311,30 @@ test('reduced motion shows the finished block composition immediately', async ({
   const still = await canvas.evaluate((el) => el.toDataURL());
   await page.waitForTimeout(500);
   expect(await canvas.evaluate((el) => el.toDataURL())).toBe(still);
+});
+
+test('camera and keyboard respond to the pointer and respect reduced motion', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  const canvas = page.locator('.about-sculpture canvas');
+  await canvas.scrollIntoViewIfNeeded();
+  await expect(page.locator('.sculpture-index')).toHaveText('01');
+  const box = await canvas.boundingBox();
+  await canvas.hover({ position: { x: box.width * 0.52, y: box.height * 0.55 } });
+  await page.waitForTimeout(400);
+  await canvas.screenshot({ path: test.info().outputPath('camera-hover.png') });
+  await expect(page.locator('.sculpture-index')).toHaveText('02', { timeout: 10000 });
+  await page.waitForTimeout(400);
+  await canvas.screenshot({ path: test.info().outputPath('keyboard-hover.png') });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(page.locator('.portfolio')).toHaveAttribute('data-motion', 'off');
+  await page.waitForTimeout(100);
+  const still = await canvas.evaluate((element) => element.toDataURL());
+  await canvas.hover({ position: { x: box.width * 0.4, y: box.height * 0.6 } });
+  await page.waitForTimeout(300);
+  expect(await canvas.evaluate((element) => element.toDataURL())).toBe(still);
+  expect(errors).toEqual([]);
 });

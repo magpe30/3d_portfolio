@@ -34,13 +34,7 @@ export default function About({ animate }) {
           </p>
         </Reveal>
         <div className="about-sculpture">
-          <AsciiSculpture
-            animate={animate}
-            morph
-            disperse
-            color="#e8e5d9"
-            onShapeChange={setStudy}
-          />
+          <AsciiSculpture animate={animate} morph ripple color="#e8e5d9" onShapeChange={setStudy} />
           <span className="sculpture-index" aria-hidden="true">
             0{study + 1}
           </span>

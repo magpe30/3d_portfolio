@@ -683,10 +683,17 @@ nav a[aria-current] .nav-star {
 }
 .case-plus {
   font-size: 26px;
-  transition: transform 0.3s;
+  transition: transform 0.55s cubic-bezier(0.45, 0, 0.2, 1);
 }
-.case-disclosure[open] .case-plus {
+.case-disclosure[data-expanded='true'] .case-plus {
   transform: rotate(45deg);
+}
+.case-disclosure-content {
+  display: flow-root;
+  overflow: hidden;
+}
+.case-disclosure-inner {
+  display: flow-root;
 }
 .technical-content {
   display: grid;

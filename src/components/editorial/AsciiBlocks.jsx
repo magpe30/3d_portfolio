@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { asciiRipple } from './asciiRipple';
 
 const COLUMNS = 14;
 const ROWS = 8;
@@ -35,7 +36,8 @@ function createTile(size, ratio, color) {
   tile.width = Math.ceil(size * ratio);
   tile.height = Math.ceil(size * ratio);
   const ctx = tile.getContext('2d');
-  if (!ctx) return tile;
+  if (!ctx) return { canvas: tile, points: [], font: '' };
+  const points = [];
   ctx.scale(ratio, ratio);
   const columns = Math.max(5, Math.round(size / 4.5));
   const rows = Math.max(4, Math.round(size / 6));
@@ -53,15 +55,18 @@ function createTile(size, ratio, color) {
         row < bevel || column < bevel || row >= rows - bevel || column >= columns - bevel;
       const shade = (column / columns + row / rows) / 2;
       const side = column >= columns - bevel || row >= rows - bevel;
-      ctx.globalAlpha = edge ? (side ? 0.88 : 0.65) : 0.28 + shade * 0.26;
-      ctx.fillText(
-        edge ? (side ? '@' : '#') : texture[(row * 3 + column * 7) % texture.length],
-        (column + 0.5) * stepX,
-        (row + 0.5) * stepY,
-      );
+      const point = {
+        x: (column + 0.5) * stepX,
+        y: (row + 0.5) * stepY,
+        alpha: edge ? (side ? 0.88 : 0.65) : 0.28 + shade * 0.26,
+        glyph: edge ? (side ? '@' : '#') : texture[(row * 3 + column * 7) % texture.length],
+      };
+      points.push(point);
+      ctx.globalAlpha = point.alpha;
+      ctx.fillText(point.glyph, point.x, point.y);
     }
   }
-  return tile;
+  return { canvas: tile, points, font: ctx.font };
 }
 
 export default function AsciiBlocks({ animate, color = '#bd3925' }) {
@@ -93,7 +98,50 @@ export default function AsciiBlocks({ animate, color = '#bd3925' }) {
     if (!animate) elapsedRef.current = FINISH_SECONDS;
 
     const drawTile = (target, x, y) => {
-      target.drawImage(tile, x * cell + gap / 2, y * cell + gap / 2, cell - gap, cell - gap);
+      target.drawImage(tile.canvas, x * cell + gap / 2, y * cell + gap / 2, cell - gap, cell - gap);
+    };
+
+    const drawReactiveTile = (x, y) => {
+      if (!animate || pointer.strength < 0.001) {
+        drawTile(ctx, x, y);
+        return;
+      }
+      // Transform the pointer into this tile's space, including falling-piece rotation.
+      const localPointer = ctx
+        .getTransform()
+        .inverse()
+        .transformPoint({
+          x: pointer.x * ratio,
+          y: pointer.y * ratio,
+        });
+      const radius = Math.min(170, width * 0.25);
+      const originX = x * cell + gap / 2;
+      const originY = y * cell + gap / 2;
+      if (
+        Math.hypot(originX + cell / 2 - localPointer.x, originY + cell / 2 - localPointer.y) >
+        radius + cell
+      ) {
+        drawTile(ctx, x, y);
+        return;
+      }
+      ctx.save();
+      ctx.font = tile.font;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = color;
+      const ripplePointer = { x: localPointer.x, y: localPointer.y, strength: pointer.strength };
+      for (const point of tile.points) {
+        const displaced = asciiRipple(
+          originX + point.x,
+          originY + point.y,
+          ripplePointer,
+          phaseRef.current,
+          radius,
+        );
+        ctx.globalAlpha = Math.min(1, point.alpha + displaced.alphaBoost);
+        ctx.fillText(point.glyph, displaced.x, displaced.y);
+      }
+      ctx.restore();
     };
 
     const drawLiveFace = (x, y, worldX = x, worldY = y) => {
@@ -143,7 +191,11 @@ export default function AsciiBlocks({ animate, color = '#bd3925' }) {
       ctx.transform(1, tilt.y * 0.012, tilt.x * 0.018, 1, 0, 0);
       ctx.rotate(animate ? Math.sin(phaseRef.current * 0.35) * 0.004 : 0);
       ctx.translate((-cell * COLUMNS) / 2, (-cell * ROWS) / 2);
-      ctx.drawImage(foundation, 0, 0, cell * COLUMNS, cell * ROWS);
+      if (pointer.strength < 0.001) {
+        ctx.drawImage(foundation, 0, 0, cell * COLUMNS, cell * ROWS);
+      } else {
+        for (const [x, y] of baseTiles) drawReactiveTile(x, y);
+      }
       for (const [x, y] of baseTiles) drawLiveFace(x, y);
 
       for (const piece of PIECES) {
@@ -174,7 +226,7 @@ export default function AsciiBlocks({ animate, color = '#bd3925' }) {
         ctx.translate((-piece.width * cell) / 2, (-piece.height * cell) / 2);
         for (let row = 0; row < piece.height; row++) {
           for (let column = 0; column < piece.width; column++) {
-            drawTile(ctx, column, row);
+            drawReactiveTile(column, row);
             drawLiveFace(column, row, piece.x + column, piece.y + row + drop / cell);
           }
         }

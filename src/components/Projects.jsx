@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { portfolio } from '../constants/portfolio';
 import HeadingReveal from './editorial/HeadingReveal';
 import ProjectMedia from './ProjectMedia';
+import CaseDisclosure from './CaseDisclosure';
 
 export default function Projects({ animate }) {
   const { rideImage, rideVideo, ride } = portfolio;
@@ -68,13 +69,11 @@ export default function Projects({ animate }) {
           </div>
         </dl>
         <div className="case-study">
-          <details className="case-disclosure challenge-notes">
-            <summary>
-              <span>Challenge &amp; approach</span>
-              <span className="case-plus" aria-hidden="true">
-                +
-              </span>
-            </summary>
+          <CaseDisclosure
+            className="challenge-notes"
+            title="Challenge &amp; approach"
+            animate={animate}
+          >
             <div className="case-intro">
               <p className="micro muted">The challenge</p>
               <h4 id="case-title" className="heading heading--title">
@@ -156,14 +155,12 @@ export default function Projects({ animate }) {
                 </p>
               </div>
             </div>
-          </details>
-          <details className="case-disclosure technical-notes">
-            <summary>
-              <span>Engineering notes & verification</span>
-              <span className="case-plus" aria-hidden="true">
-                +
-              </span>
-            </summary>
+          </CaseDisclosure>
+          <CaseDisclosure
+            className="technical-notes"
+            title="Engineering notes & verification"
+            animate={animate}
+          >
             <div className="technical-content">
               <div>
                 <h5 className="heading heading--subtitle">Noisy input, useful comparisons.</h5>
@@ -191,7 +188,7 @@ export default function Projects({ animate }) {
                 </a>
               </div>
             </div>
-          </details>
+          </CaseDisclosure>
         </div>
       </article>
     </section>
