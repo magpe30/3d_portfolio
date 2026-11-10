@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-export default function CaseDisclosure({ title, className, animate, children }) {
+export default function CaseDisclosure({ title, animate, children }) {
   const detailsRef = useRef(null);
   const contentRef = useRef(null);
   const innerRef = useRef(null);
@@ -75,7 +75,7 @@ export default function CaseDisclosure({ title, className, animate, children }) 
   }
 
   return (
-    <details ref={detailsRef} className={`case-disclosure ${className}`}>
+    <details ref={detailsRef} className="case-disclosure">
       <summary onClick={toggle}>
         <span>{title}</span>
         <span className="case-plus" aria-hidden="true">
@@ -93,7 +93,6 @@ export default function CaseDisclosure({ title, className, animate, children }) 
 
 CaseDisclosure.propTypes = {
   title: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
   animate: PropTypes.bool.isRequired,
   children: PropTypes.node.isRequired,
 };

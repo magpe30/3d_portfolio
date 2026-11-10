@@ -24,3 +24,11 @@ playwright-report
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment files and private keys
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx

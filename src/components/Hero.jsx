@@ -1,47 +1,47 @@
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import PropTypes from 'prop-types';
-import { useLocalTime } from '../utils/useLocalTime';
 import HeadingReveal from './editorial/HeadingReveal';
-import AsciiBlocks from './editorial/AsciiBlocks';
+import HeroObjects from './editorial/HeroObjects';
 
 export default function Hero({ animate }) {
-  const time = useLocalTime('America/Los_Angeles');
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+  const backgroundColor = useTransform(scrollYProgress, [0, 0.8], ['#e9e8e3', '#e5ee8d']);
   return (
-    <section id="home" tabIndex={-1} className="hero" aria-labelledby="hero-title">
-      <div className="hero-topline micro">
-        <span>Creative developer & design engineer</span>
-        <span>
-          San Diego, CA <span className="clock">{time}</span>
-        </span>
-      </div>
+    <motion.section
+      ref={ref}
+      style={{ backgroundColor: animate ? backgroundColor : '#e9e8e3' }}
+      id="home"
+      tabIndex={-1}
+      className="hero"
+      aria-labelledby="hero-title"
+    >
+      <HeroObjects animate={animate} />
       <div className="hero-copy">
+        <p className="hero-eyebrow micro">Magda Pelka / Creative engineer</p>
         <HeadingReveal as="h1" animate={animate} id="hero-title">
-          <span className="hero-title-line">I build thoughtful interfaces</span>
-          <span className="hero-title-line">
-            with a little <em className="heading-accent">personality.</em>
-          </span>
+          <span className="hero-line">Design with purpose.</span>{' '}
+          <span className="hero-line">Build with personality.</span>
         </HeadingReveal>
+        <p className="hero-description">
+          I design and build interfaces for web and mobile. I like working on the details: how a
+          screen is laid out, how it responds, and how the code fits together.
+        </p>
+        <a className="text-link" href="#projects">
+          View selected work <span aria-hidden="true">↘</span>
+        </a>
       </div>
-      <div className="hero-support">
-        <div className="hero-intro">
-          <p>I design and build web interfaces, interactive tools, and shared component systems.</p>
-          <div className="hero-links">
-            <a className="text-link" href="#projects">
-              View selected work <span aria-hidden="true">↓</span>
-            </a>
-            <a className="text-link" href="#experience">
-              My experience <span aria-hidden="true">↓</span>
-            </a>
-          </div>
-        </div>
-        <div className="hero-art">
-          <AsciiBlocks animate={animate} />
-        </div>
+      <div className="hero-bottom">
+        <span>
+          <span className="status-dot" />
+          Open to creative engineering roles
+        </span>
+        <a href="#projects">
+          Explore the work <span aria-hidden="true">↓</span>
+        </a>
       </div>
-      <div className="hero-bottom micro">
-        <span>Design in the details. Care in the code.</span>
-        <span>Selected work / {new Date().getFullYear()}</span>
-      </div>
-    </section>
+    </motion.section>
   );
 }
 Hero.propTypes = { animate: PropTypes.bool.isRequired };

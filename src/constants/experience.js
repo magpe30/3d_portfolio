@@ -5,7 +5,7 @@ export const jobs = [
     role: 'Software Engineer',
     dates: '2025 — Present',
     description:
-      'Leading a shared Tamagui and TypeScript component library across mobile, web, and internal tools.',
+      'Leading development of a shared component library in Tamagui and TypeScript for mobile, web, and internal tools.',
     stack: 'React Native / TypeScript / Tamagui',
   },
   {
@@ -14,7 +14,7 @@ export const jobs = [
     role: 'Software Developer',
     dates: '2023 — 2025',
     description:
-      'Built marketplace interfaces and AI workflows that reduced dealer profiling time by 60%.',
+      'Built marketplace interfaces and AI workflows, cutting the time spent on dealer profiling by 60%.',
     stack: 'Vue.js / TypeScript / Node.js / OpenAI',
   },
   {
@@ -23,7 +23,7 @@ export const jobs = [
     role: 'Junior Frontend Engineer',
     dates: '2021 — 2023',
     description:
-      'Built reusable React components and improved Storybook performance and customer-facing UX.',
+      'Built reusable React components, improved Storybook performance, and worked on the customer-facing interface.',
     stack: 'React / TypeScript / Storybook',
   },
 ];

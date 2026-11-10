@@ -1,4 +1,4 @@
-// Shared by the blocks and morphing objects so their hover response feels consistent.
+// Displace nearby glyphs without changing the underlying silhouette.
 export function asciiRipple(x, y, pointer, phase, radius) {
   const dx = x - pointer.x;
   const dy = y - pointer.y;

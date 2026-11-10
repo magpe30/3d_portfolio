@@ -2,11 +2,6 @@ const MASK_WIDTH = 320;
 const MASK_HEIGHT = 256;
 const POINT_COUNT = 7200;
 const cache = new Map();
-export const SCREENS = {
-  monitor: { x: 43, y: 24, width: 234, height: 122 },
-  laptop: { x: 69, y: 49, width: 182, height: 119 },
-};
-
 function roundedRect(ctx, x, y, width, height, radius, color) {
   ctx.fillStyle = color;
   ctx.beginPath();
@@ -47,59 +42,6 @@ function drawKeyboard(ctx) {
   }
   ctx.fillStyle = '#efefef';
   ctx.fillRect(258, 198, 12, 2);
-}
-
-function drawCordedKeyboard(ctx) {
-  // Give the cable room to curve above the keyboard, like a desk viewed from above.
-  ctx.save();
-  ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(160, 108);
-  ctx.bezierCurveTo(144, 65, 238, 83, 275, 42);
-  ctx.bezierCurveTo(286, 30, 290, 22, 301, 17);
-  ctx.strokeStyle = '#777777';
-  ctx.lineWidth = 6;
-  ctx.stroke();
-  ctx.strokeStyle = '#dddddd';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-  ctx.translate(0, 48);
-  ctx.scale(1, 0.82);
-  drawKeyboard(ctx);
-  ctx.restore();
-}
-
-function drawMonitor(ctx) {
-  // A standalone display and stand; the screen is reserved for live binary rain.
-  roundedRect(ctx, 150, 156, 20, 22, 3, '#999999');
-  roundedRect(ctx, 122, 176, 76, 5, 3, '#cccccc');
-  roundedRect(ctx, 35, 19, 250, 146, 6, '#777777');
-  roundedRect(ctx, 35, 16, 250, 146, 6, '#bcbcbc');
-  roundedRect(ctx, 39, 20, 242, 130, 3, '#626262');
-  roundedRect(ctx, 157, 153, 6, 2, 1, '#efefef');
-  // Leave the display clear for the falling digits.
-  ctx.clearRect(
-    SCREENS.monitor.x,
-    SCREENS.monitor.y,
-    SCREENS.monitor.width,
-    SCREENS.monitor.height,
-  );
-}
-
-// Cache the two glyphs so each rain frame only composites small images.
-export function createBinaryGlyphs(color) {
-  return ['0', '1'].map((digit) => {
-    const sprite = document.createElement('canvas');
-    sprite.width = 24;
-    sprite.height = 32;
-    const ink = sprite.getContext('2d');
-    ink.fillStyle = color;
-    ink.font = '24px "Courier New", monospace';
-    ink.textAlign = 'center';
-    ink.textBaseline = 'middle';
-    ink.fillText(digit, 12, 16);
-    return sprite;
-  });
 }
 
 function drawCamera(ctx) {
@@ -147,54 +89,45 @@ function drawCamera(ctx) {
   ctx.fill();
 }
 
-function drawLaptop(ctx) {
-  roundedRect(ctx, 56, 34, 208, 149, 8, '#cccccc');
-  roundedRect(ctx, 63, 41, 194, 135, 4, '#424242');
-  roundedRect(ctx, 69, 49, 182, 119, 2, '#585858');
-  ctx.fillStyle = '#dddddd';
-  ctx.fillRect(155, 37, 9, 2);
-  ctx.fillStyle = '#8f8f8f';
-  ctx.fillRect(69, 49, 182, 10);
-  for (let x = 76; x < 94; x += 7) ctx.fillRect(x, 52, 3, 3);
-  // A quiet editor window, with enough contrast to survive the ASCII sampling.
-  const lines = [
-    [85, 78, 47],
-    [99, 92, 88],
-    [99, 106, 66],
-    [112, 120, 98],
-    [99, 134, 50],
-    [85, 148, 27],
+// A processor with a small connected network: the same sampled-character
+// treatment as the camera and keyboard, without an external image asset.
+function drawProcessor(ctx) {
+  for (let pin = 0; pin < 8; pin++) {
+    const offset = 84 + pin * 21;
+    roundedRect(ctx, offset, 34, 8, 24, 2, '#aaaaaa');
+    roundedRect(ctx, offset, 204, 8, 24, 2, '#aaaaaa');
+  }
+  for (let pin = 0; pin < 6; pin++) {
+    const offset = 72 + pin * 22;
+    roundedRect(ctx, 42, offset, 24, 8, 2, '#aaaaaa');
+    roundedRect(ctx, 254, offset, 24, 8, 2, '#aaaaaa');
+  }
+  roundedRect(ctx, 64, 55, 192, 155, 10, '#cccccc');
+  roundedRect(ctx, 64, 49, 192, 155, 10, '#888888');
+  roundedRect(ctx, 75, 60, 170, 132, 6, '#333333');
+  roundedRect(ctx, 84, 69, 152, 114, 4, '#666666');
+  const nodes = [
+    [110, 94],
+    [110, 158],
+    [160, 126],
+    [210, 94],
+    [210, 158],
   ];
-  for (const [x, y, length] of lines) {
-    ctx.fillStyle = y === 78 || y === 148 ? '#d5d5d5' : '#969696';
-    ctx.fillRect(x, y, length, 4);
+  ctx.strokeStyle = '#bbbbbb';
+  ctx.lineWidth = 3;
+  for (const index of [0, 1, 3, 4]) {
+    ctx.beginPath();
+    ctx.moveTo(...nodes[index]);
+    ctx.lineTo(...nodes[2]);
+    ctx.stroke();
   }
-  ctx.fillStyle = '#aaaaaa';
-  ctx.beginPath();
-  ctx.moveTo(56, 184);
-  ctx.lineTo(264, 184);
-  ctx.lineTo(299, 224);
-  ctx.lineTo(21, 224);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle = '#626262';
-  for (let row = 0; row < 3; row++) {
-    for (let col = 0; col < 13; col++) {
-      ctx.fillRect(65 - row * 5 + col * (14 + row * 0.6), 190 + row * 7, 10 + row, 4);
-    }
-  }
-  roundedRect(ctx, 133, 213, 54, 8, 2, '#727272');
-  ctx.fillStyle = '#dddddd';
-  ctx.beginPath();
-  ctx.moveTo(21, 224);
-  ctx.lineTo(299, 224);
-  ctx.lineTo(291, 232);
-  ctx.lineTo(29, 232);
-  ctx.closePath();
-  ctx.fill();
+  nodes.forEach(([x, y], index) => {
+    const size = index === 2 ? 25 : 15;
+    roundedRect(ctx, x - size / 2, y - size / 2, size, size, 2, '#eeeeee');
+  });
 }
 
-// Spatial ordering keeps nearby points together as they move into the next object.
+// Sample in a stable spatial order to distribute glyphs across each silhouette.
 function spatialKey(x, y) {
   let key = 0;
   for (let bit = 0; bit < 9; bit++) {
@@ -204,9 +137,8 @@ function spatialKey(x, y) {
   return key;
 }
 
-export function objectPoints(shape, clearScreen = false) {
-  const key = `${shape}:${clearScreen}`;
-  if (cache.has(key)) return cache.get(key);
+export function objectPoints(shape) {
+  if (cache.has(shape)) return cache.get(shape);
   const mask = document.createElement('canvas');
   mask.width = MASK_WIDTH;
   mask.height = MASK_HEIGHT;
@@ -214,13 +146,9 @@ export function objectPoints(shape, clearScreen = false) {
   if (!ctx) return new Float32Array(0);
   ({
     keyboard: drawKeyboard,
-    'corded-keyboard': drawCordedKeyboard,
-    monitor: drawMonitor,
     camera: drawCamera,
-    laptop: drawLaptop,
+    processor: drawProcessor,
   })[shape](ctx);
-  const screen = clearScreen && SCREENS[shape];
-  if (screen) ctx.clearRect(screen.x, screen.y, screen.width, screen.height);
   const pixels = ctx.getImageData(0, 0, MASK_WIDTH, MASK_HEIGHT).data;
   const samples = [];
   for (let y = 0; y < MASK_HEIGHT; y += 2) {
@@ -238,6 +166,6 @@ export function objectPoints(shape, clearScreen = false) {
     points[i * 3 + 1] = (sample.y - 128) / 88;
     points[i * 3 + 2] = sample.tone;
   }
-  cache.set(key, points);
+  cache.set(shape, points);
   return points;
 }

@@ -1,22 +1,14 @@
+import PropTypes from 'prop-types';
 import { useActiveSection } from '../utils/useActiveSection';
 
-export default function Navbar() {
+export default function Navbar({ isCase = false }) {
   const activeSection = useActiveSection();
+  const prefix = isCase ? '/' : '';
   return (
-    <>
-      <aside className="identity-rail" aria-label="Identity">
-        <a href="#home" className="monogram" aria-label="Magda Pelka, back to home">
-          m<span>p</span>
-          <i>✳</i>
-        </a>
-        <span className="rail-caption">Magda Pelka — Portfolio</span>
-        <a href="#contact" className="rail-bottom" aria-label="Go to contact">
-          ↗
-        </a>
-      </aside>
-      <header className="site-header">
-        <a className="header-name" href="#home">
-          Magda Pelka<span>Design & engineering</span>
+    <header className="site-header">
+      <div className="nav-pill">
+        <a className="header-name" href={`${prefix}#home`} aria-label="Magda Pelka, home">
+          <span aria-hidden="true">mp.</span>
         </a>
         <nav aria-label="Main navigation">
           {[
@@ -26,22 +18,20 @@ export default function Navbar() {
           ].map(([id, label]) => (
             <a
               key={id}
-              href={`#${id}`}
-              aria-current={activeSection === id ? 'location' : undefined}
+              href={`${prefix}#${id}`}
+              aria-current={!isCase && activeSection === id ? 'location' : undefined}
             >
               {label}
-              <span className="nav-star" aria-hidden="true">
-                ✳
-              </span>
             </a>
           ))}
         </nav>
-        <div className="header-actions">
-          <a className="contact-link" href="#contact" aria-label="Let’s talk">
-            Let’s talk <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-    </>
+      </div>
+      <div className="header-actions">
+        <a className="contact-link" href={`${prefix}#contact`}>
+          Let’s make something move <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </header>
   );
 }
+Navbar.propTypes = { isCase: PropTypes.bool };

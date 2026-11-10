@@ -1,15 +1,13 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useMotionPreference } from '../utils/useMotionPreference';
 
-export default function ProjectMedia({ image, video, title, caption, motionEnabled = true }) {
+export default function ProjectMedia({ image, video, title, caption, animate }) {
   const id = useId();
   const videoId = `${id}-preview`;
   const captionId = `${id}-caption`;
   const figureRef = useRef(null);
   const videoRef = useRef(null);
-  const systemReducedMotion = useMotionPreference();
-  const reducedMotion = systemReducedMotion || !motionEnabled;
+  const reducedMotion = !animate;
   const [visible, setVisible] = useState(false);
   const [pageVisible, setPageVisible] = useState(!document.hidden);
   const [playback, setPlayback] = useState(null);
@@ -129,7 +127,7 @@ export default function ProjectMedia({ image, video, title, caption, motionEnabl
 ProjectMedia.propTypes = {
   title: PropTypes.string.isRequired,
   caption: PropTypes.string.isRequired,
-  motionEnabled: PropTypes.bool,
+  animate: PropTypes.bool.isRequired,
   image: PropTypes.shape({
     src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
