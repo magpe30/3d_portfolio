@@ -74,5 +74,14 @@ bottom development-toolbar edge is cropped in the preview presentation.
 - `src/index.css`: shared design tokens, typography, layouts, and breakpoints.
 - `tests/portfolio.spec.js`: responsive, navigation, motion, media, and fallback checks.
 
-Vite provides the local deep-link fallback. Future static hosting must rewrite
-`/work/*` to `index.html` (while serving asset requests normally).
+## Vercel deployment
+
+The root `vercel.json` sets the Vite build command (`npm run build`), output directory
+(`dist`), and rewrites `/work/*` to `/index.html`. This lets React render the RIDE SD
+and Fluent case studies when visitors open a direct link or refresh the page.
+Assets outside `/work/` are served normally.
+
+Include `vercel.json` in the commit you deploy. Vite's local preview supplies its own
+fallback, so passing local navigation tests alone does not verify Vercel routing.
+After deployment, check both `/work/ride-sd` and `/work/fluent` directly and refresh
+each page. Both should return HTTP 200 and display the matching case study.
