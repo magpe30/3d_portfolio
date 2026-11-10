@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -42,7 +43,10 @@ function WorkChapter({ project, animate }) {
           <div className="project-description">
             <p>{project.description}</p>
             <a className="text-link" href={`/work/${project.id}`}>
-              Explore the case study <span aria-hidden="true">↗</span>
+              Explore the case study{' '}
+              <span aria-hidden="true">
+                <ArrowIcon />
+              </span>
             </a>
           </div>
         </div>
@@ -58,7 +62,9 @@ function WorkChapter({ project, animate }) {
             >
               <div className="project-stage-label micro">
                 <span>{project.previewLabel}</span>
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true">
+                  <ArrowIcon />
+                </span>
               </div>
               <img
                 src={project.image.src}
@@ -69,7 +75,10 @@ function WorkChapter({ project, animate }) {
                 decoding="async"
               />
               <span className="project-open">
-                View project <span aria-hidden="true">↗</span>
+                View project{' '}
+                <span aria-hidden="true">
+                  <ArrowIcon />
+                </span>
               </span>
             </a>
           </motion.div>

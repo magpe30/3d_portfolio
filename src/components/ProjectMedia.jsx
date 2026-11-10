@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import { useEffect, useId, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -116,7 +117,10 @@ export default function ProjectMedia({ image, video, title, caption, animate }) 
             </button>
           )}
           <a href={image.src} target="_blank" rel="noreferrer">
-            View screenshot <span aria-hidden="true">↗</span>
+            View screenshot{' '}
+            <span aria-hidden="true">
+              <ArrowIcon />
+            </span>
           </a>
         </div>
       </figcaption>

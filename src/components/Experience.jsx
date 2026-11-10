@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import PropTypes from 'prop-types';
 import { linkedIn } from '../constants/contact';
 import { jobs } from '../constants/experience';
@@ -39,7 +40,10 @@ export default function Experience({ animate }) {
         ))}
       </div>
       <a className="text-link resume-link" href={linkedIn} target="_blank" rel="noreferrer">
-        More on LinkedIn <span aria-hidden="true">↗</span>
+        More on LinkedIn{' '}
+        <span aria-hidden="true">
+          <ArrowIcon />
+        </span>
       </a>
     </ColorSection>
   );

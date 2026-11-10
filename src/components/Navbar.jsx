@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import PropTypes from 'prop-types';
 import { useActiveSection } from '../utils/useActiveSection';
 
@@ -28,7 +29,10 @@ export default function Navbar({ isCase = false }) {
       </div>
       <div className="header-actions">
         <a className="contact-link" href={`${prefix}#contact`}>
-          Let’s make something move <span aria-hidden="true">↗</span>
+          Let’s make something move{' '}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </a>
       </div>
     </header>

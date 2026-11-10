@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import PropTypes from 'prop-types';
@@ -29,7 +30,10 @@ export default function Hero({ animate }) {
           screen is laid out, how it responds, and how the code fits together.
         </p>
         <a className="text-link" href="#projects">
-          View selected work <span aria-hidden="true">↘</span>
+          View selected work{' '}
+          <span aria-hidden="true">
+            <ArrowIcon direction="down-right" />
+          </span>
         </a>
       </div>
       <div className="hero-bottom">
@@ -38,7 +42,10 @@ export default function Hero({ animate }) {
           Open to creative engineering roles
         </span>
         <a href="#projects">
-          Explore the work <span aria-hidden="true">↓</span>
+          Explore the work{' '}
+          <span aria-hidden="true">
+            <ArrowIcon direction="down" />
+          </span>
         </a>
       </div>
     </motion.section>

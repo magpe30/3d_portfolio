@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import PropTypes from 'prop-types';
 import { email, socialLinks } from '../constants/contact';
 import HeadingReveal from './editorial/HeadingReveal';
@@ -26,7 +27,7 @@ export default function Contact({ animate }) {
           <br />
           something move<span className="display-dot">.</span>
           <span className="heading-link-arrow" aria-hidden="true">
-            ↗
+            <ArrowIcon />
           </span>
         </a>
       </HeadingReveal>
@@ -36,7 +37,10 @@ export default function Contact({ animate }) {
           interface and the code. If that sounds like your team, I’d love to hear from you.
         </p>
         <a className="email-link" href={`mailto:${email}`}>
-          {email} <span aria-hidden="true">↗</span>
+          {email}{' '}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </a>
       </div>
       <footer>
@@ -44,12 +48,12 @@ export default function Contact({ animate }) {
         <div className="social-links">
           {socialLinks.map((link) => (
             <a key={link.name} href={link.link} target="_blank" rel="noreferrer">
-              {link.name} ↗
+              {link.name} <ArrowIcon />
             </a>
           ))}
         </div>
         <a href="#home" className="back-top micro">
-          Back to top ↑
+          Back to top <ArrowIcon direction="up" />
         </a>
       </footer>
     </ColorSection>

@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import PropTypes from 'prop-types';
 import { portfolio, projects } from '../constants/portfolio';
 import HeadingReveal from './editorial/HeadingReveal';
@@ -12,7 +13,7 @@ export default function CaseStudy({ slug, animate }) {
     <main id="case-main" tabIndex={-1} className={`case-page case-page--${slug}`}>
       <section className="case-hero section-pad" aria-labelledby="case-heading">
         <a href="/#projects" className="text-link">
-          ← All selected work
+          <ArrowIcon direction="left" /> All selected work
         </a>
         <p className="micro case-kicker">
           {ride ? '01 / RIDE SD' : '02 / Fluent'} · Independent project · Working prototype
@@ -72,10 +73,16 @@ export default function CaseStudy({ slug, animate }) {
       <section className="case-next section-pad" aria-label="Next project">
         <p className="micro">Keep exploring</p>
         <a href={`/work/${ride ? 'fluent' : 'ride-sd'}`}>
-          {ride ? 'Fluent' : 'RIDE SD'} <span aria-hidden="true">↗</span>
+          {ride ? 'Fluent' : 'RIDE SD'}{' '}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </a>
         <a className="text-link" href="/#contact">
-          Get in touch <span aria-hidden="true">↗</span>
+          Get in touch{' '}
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </a>
       </section>
     </main>
@@ -144,7 +151,10 @@ function RideStory({ animate }) {
             target="_blank"
             rel="noreferrer"
           >
-            See the code change <span aria-hidden="true">↗</span>
+            See the code change{' '}
+            <span aria-hidden="true">
+              <ArrowIcon />
+            </span>
           </a>
         </div>
       </section>
@@ -182,7 +192,10 @@ function RideStory({ animate }) {
               target="_blank"
               rel="noreferrer"
             >
-              Browse the tests <span aria-hidden="true">↗</span>
+              Browse the tests{' '}
+              <span aria-hidden="true">
+                <ArrowIcon />
+              </span>
             </a>
           </div>
         </div>
@@ -193,7 +206,10 @@ function RideStory({ animate }) {
         target="_blank"
         rel="noreferrer"
       >
-        View the repository <span aria-hidden="true">↗</span>
+        View the repository{' '}
+        <span aria-hidden="true">
+          <ArrowIcon />
+        </span>
       </a>
     </div>
   );
@@ -281,8 +297,12 @@ function FluentStory({ animate }) {
             and retries.
           </p>
           <div className="state-samples" aria-label="Illustrative button states">
-            <span>Primary action ↗</span>
-            <span>Secondary action ↗</span>
+            <span>
+              Primary action <ArrowIcon />
+            </span>
+            <span>
+              Secondary action <ArrowIcon />
+            </span>
             <span aria-disabled="true">Processing…</span>
           </div>
           <p className="story-note">Examples of button states, shown here for reference.</p>
@@ -309,7 +329,10 @@ function FluentStory({ animate }) {
         target="_blank"
         rel="noreferrer"
       >
-        View the repository <span aria-hidden="true">↗</span>
+        View the repository{' '}
+        <span aria-hidden="true">
+          <ArrowIcon />
+        </span>
       </a>
     </div>
   );

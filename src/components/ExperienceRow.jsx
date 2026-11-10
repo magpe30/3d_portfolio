@@ -1,3 +1,4 @@
+import ArrowIcon from './ArrowIcon';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
@@ -87,7 +88,7 @@ export default function ExperienceRow({ job, index, animate }) {
           </span>
         </div>
         <span className="job-arrow" aria-hidden="true">
-          ↗
+          <ArrowIcon />
         </span>
       </a>
       {createPortal(
@@ -100,7 +101,9 @@ export default function ExperienceRow({ job, index, animate }) {
           transition={{ duration: animate ? 0.22 : 0, ease: [0.22, 1, 0.36, 1] }}
         >
           <span>Visit company website</span>
-          <span aria-hidden="true">↗</span>
+          <span aria-hidden="true">
+            <ArrowIcon />
+          </span>
         </motion.div>,
         document.body,
       )}
