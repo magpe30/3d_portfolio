@@ -40,6 +40,7 @@ export default function HeadingReveal({
   children,
   animate = true,
   className = '',
+  defer = false,
   id,
 }) {
   const ref = useRef(null);
@@ -48,7 +49,7 @@ export default function HeadingReveal({
   const content = splitLetters(children, cursor);
 
   useEffect(() => {
-    if (!animate || visible) return undefined;
+    if (!animate || visible || defer) return undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.intersectionRatio >= 0.15) setVisible(true);
@@ -57,7 +58,7 @@ export default function HeadingReveal({
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [animate, visible]);
+  }, [animate, visible, defer]);
 
   return (
     <Tag
@@ -78,5 +79,6 @@ HeadingReveal.propTypes = {
   children: PropTypes.node.isRequired,
   animate: PropTypes.bool,
   className: PropTypes.string,
+  defer: PropTypes.bool,
   id: PropTypes.string,
 };

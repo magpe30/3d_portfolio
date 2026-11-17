@@ -1,31 +1,54 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function HeroObjects({ animate }) {
+export default function HeroObjects({ animate, onLoadProgress }) {
   const hostRef = useRef(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    if (!animate) return undefined;
+    if (!animate) {
+      onLoadProgress(1);
+      return undefined;
+    }
     let cancelled = false,
-      dispose;
+      dispose,
+      firstFrame,
+      secondFrame,
+      reportedReady = false;
+    const fallback = () => {
+      if (cancelled) return;
+      setReady(false);
+      onLoadProgress(1);
+    };
     import('./heroObjectScene')
       .then(({ createHeroObjectScene }) => {
         if (cancelled) return;
+        onLoadProgress(0.55);
         dispose = createHeroObjectScene(
           hostRef.current,
-          () => setReady(true),
-          () => setReady(false),
+          () => {
+            if (cancelled) return;
+            setReady(true);
+            if (reportedReady) return;
+            reportedReady = true;
+            // Let React expose the rendered canvas and the browser paint it before revealing.
+            firstFrame = requestAnimationFrame(() => {
+              secondFrame = requestAnimationFrame(() => {
+                if (!cancelled) onLoadProgress(1);
+              });
+            });
+          },
+          fallback,
         );
       })
-      .catch(() => {
-        if (!cancelled) setReady(false);
-      });
+      .catch(fallback);
     return () => {
       cancelled = true;
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
       dispose?.();
       setReady(false);
     };
-  }, [animate]);
+  }, [animate, onLoadProgress]);
   return (
     <div
       ref={hostRef}
@@ -84,4 +107,7 @@ export default function HeroObjects({ animate }) {
     </div>
   );
 }
-HeroObjects.propTypes = { animate: PropTypes.bool.isRequired };
+HeroObjects.propTypes = {
+  animate: PropTypes.bool.isRequired,
+  onLoadProgress: PropTypes.func.isRequired,
+};

@@ -38,6 +38,14 @@ were not supplied; the site links to the existing LinkedIn profile and email.
 
 ## Motion and rendering
 
+The homepage opens with a 0–100% introduction. Progress is based on completed
+startup milestones (font loading, the Three.js import, and the first painted hero
+frame), rather than downloaded byte counts. The page stays inert until the loader
+finishes, then the hero headline begins its reveal. Direct section links and case
+studies bypass the intro. Reduced motion skips WebGL and uses a static transition.
+An “Enter portfolio” control and a ten-second timeout allow access with the static
+artwork if loading stalls. Project media stays lazy-loaded below the fold.
+
 Three.js is dynamically imported only when motion is enabled. The glass code symbols
 use beveled geometry, studio reflections, and a fixed set of triangular fragments
 in one canvas confined to the introduction. Falling, scattering, and settling

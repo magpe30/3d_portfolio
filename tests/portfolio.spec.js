@@ -94,6 +94,7 @@ for (const reducedMotion of ['reduce', 'no-preference']) {
   }) => {
     await page.emulateMedia({ reducedMotion });
     await page.goto('/');
+    await expect(page.locator('.intro-loader')).toHaveCount(0);
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'Skip to selected work' })).toBeFocused();
     await page.keyboard.press('Enter');
@@ -342,6 +343,7 @@ test('company row follows the pointer, stays within the viewport, and is clickab
 test('company row keeps a stationary cue for keyboard and reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
+  await expect(page.locator('.intro-loader')).toHaveCount(0);
   const row = page.getByRole('link', { name: /BlackCloak Visit company website/ });
   await row.focus();
   await expect(row).toBeFocused();

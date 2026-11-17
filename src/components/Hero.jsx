@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import HeadingReveal from './editorial/HeadingReveal';
 import HeroObjects from './editorial/HeroObjects';
 
-export default function Hero({ animate }) {
+export default function Hero({ animate, artworkEnabled, loading, onLoadProgress }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const backgroundColor = useTransform(scrollYProgress, [0, 0.8], ['#e9e8e3', '#e5ee8d']);
@@ -18,10 +18,10 @@ export default function Hero({ animate }) {
       className="hero"
       aria-labelledby="hero-title"
     >
-      <HeroObjects animate={animate} />
+      <HeroObjects animate={animate && artworkEnabled} onLoadProgress={onLoadProgress} />
       <div className="hero-copy">
         <p className="hero-eyebrow micro">Magda Pelka / Creative engineer</p>
-        <HeadingReveal as="h1" animate={animate} id="hero-title">
+        <HeadingReveal as="h1" animate={animate} defer={loading} id="hero-title">
           <span className="hero-line">Design with purpose.</span>{' '}
           <span className="hero-line">Build with personality.</span>
         </HeadingReveal>
@@ -51,4 +51,9 @@ export default function Hero({ animate }) {
     </motion.section>
   );
 }
-Hero.propTypes = { animate: PropTypes.bool.isRequired };
+Hero.propTypes = {
+  animate: PropTypes.bool.isRequired,
+  artworkEnabled: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onLoadProgress: PropTypes.func.isRequired,
+};
